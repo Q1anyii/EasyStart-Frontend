@@ -1,0 +1,18 @@
+/* 全局基础样式：只做 reset 和字体，界面样式都在 App.vue 的 scoped 里 */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #f0f2f5;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
