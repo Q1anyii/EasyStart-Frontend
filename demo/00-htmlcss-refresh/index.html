@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>前端学习 · 路线打卡页（阶段0 HTML/CSS 回顾）</title>
+  <style>
+    /* ========== 阶段0 回顾 ①：盒模型 ==========
+       CSS 里每个元素都是一个"盒子"，由内到外四层：
+       content(内容) → padding(内边距) → border(边框) → margin(外边距)
+       本页的 .card 同时用到了 padding / border / margin，对着页面看效果 */
+    /* 全局重置：* 选中页面所有元素；box-sizing:border-box 让 padding/border 计入宽度，布局更好算 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f5f7fa;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    /* ========== 阶段0 回顾 ②：Flex 布局 ==========
+       display:flex 后，容器叫 flex 容器，直接子元素叫 flex 项目。
+       主轴方向由 flex-direction 决定（默认 row：从左到右）。
+       justify-content 管主轴对齐，align-items 管交叉轴对齐 */
+    .site-head {
+      background: #fff;
+      border-bottom: 2px solid #e5e7eb;  /* 边框：content 和 padding 外面的一层 */
+      padding: 16px 24px;                 /* 内边距：让内容不贴边 */
+      margin-bottom: 24px;                /* 外边距：把 header 和下面内容隔开 */
+      display: flex;
+      align-items: center;                /* 交叉轴（垂直）居中 */
+      justify-content: space-between;     /* 主轴（水平）两端对齐：标题左、导航右 */
+    }
+    .site-head h1 { font-size: 22px; }
+
+    nav a {
+      margin-left: 16px;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    /* ========== 阶段0 回顾 ③：伪类选择器 ==========
+       :hover 是 CSS3 重点，鼠标悬停时生效，是最常用的交互反馈 */
+    nav a:hover { text-decoration: underline; }
+
+    main { padding: 0 24px 24px; }
+
+    /* .cards 是 flex 容器：gap 是项目间距，flex-wrap 允许换行 */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* .card 既是 flex 项目也是普通盒子：
+       flex: 1 1 220px = 允许放大1倍 / 允许缩小1倍 / 基础宽度220px
+       三张卡片会均分剩余空间 */
+    .card {
+      flex: 1 1 220px;
+      background: #fff;
+      border: 1px solid #e5e7eb;      /* 边框 */
+      border-left: 4px solid #2563eb; /* 左边一条彩条做视觉强调 */
+      border-radius: 10px;            /* CSS3 圆角 */
+      padding: 16px 18px;             /* 内边距：内容不贴卡片边缘 */
+    }
+    .card h2 { font-size: 16px; margin-bottom: 6px; }
+    .card p { font-size: 14px; color: #4b5563; }
+
+    /* 任务区：做完全部改动任务才算过关 */
+    .tasks {
+      margin-top: 24px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+    .tasks h2 { font-size: 15px; margin-bottom: 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 4px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+
+    footer {
+      margin-top: 32px;
+      padding: 12px 0 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <!-- ========== H5 语义标签（阶段0 重点补强） ==========
+       header / nav / main / section / article / footer 都有明确语义，
+       代替以前用 <div class="header"> 的做法，利于可读性和 SEO -->
+  <header class="site-head">
+    <h1>前端学习路线</h1>
+    <!-- nav：导航区 -->
+    <nav>
+      <a href="#stage1">阶段一</a>
+      <a href="#stage2">阶段二</a>
+      <a href="#stage3">阶段三</a>
+    </nav>
+  </header>
+
+  <!-- main：页面主体内容区（每页只用一次） -->
+  <main>
+    <!-- section 是内容区块，article 是独立成篇的内容：卡片区用 section 包裹，每张卡片用 article -->
+    <section class="cards">
+      <article class="card" id="stage1">
+        <h2>阶段一 · 语法</h2>
+        <p>变量 / 函数 / 数组 / 对象 / DOM / 事件 / 异步</p>
+      </article>
+      <article class="card" id="stage2">
+        <h2>阶段二 · 整合 demo</h2>
+        <p>TodoList / 随机点名 / 轮播 / 计算器</p>
+      </article>
+      <article class="card" id="stage3">
+        <h2>阶段三 · 小项目</h2>
+        <p>记账本 / 天气查询</p>
+      </article>
+    </section>
+
+    <!-- 任务区 -->
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li>照着卡片的写法，自己新增第 4 张卡片「阶段四 · 复现项目」（复制结构、改文字即可）</li>
+        <li>把 <code>.cards</code> 的 <code>flex-direction</code> 改成 <code>column</code>，刷新看布局变化，再改回 <code>row</code></li>
+        <li>在 <code>.card</code> 样式规则里加一行 <code>box-shadow: 0 4px 8px rgba(0,0,0,.15)</code>（CSS3 常用效果，所有卡片会带上阴影）</li>
+        <li>改 <code>nav a:hover</code>：除了下划线，再加背景和圆角，例如 <code>background:#eef2ff; padding:2px 6px; border-radius:4px</code>（练习写伪类样式）</li>
+      </ol>
+    </section>
+  </main>
+
+  <!-- footer：页脚 -->
+  <footer>
+    <p>亲手敲一遍，才算学会 · 2026 秋招 · 前端补拼图</p>
+  </footer>
+</body>
+</html>
