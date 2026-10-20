@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第1课 · 变量与数据类型</title>
+  <style>
+    /* 简单样式：让结果区在页面上醒目可见 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    /* 结果区：深色底，模拟控制台效果 */
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第1课 · 变量与数据类型</h1>
+    <p class="sub">本课目标：会声明变量（let / const），认识 5 种基本数据类型，会用 typeof 查类型，知道 == 和 === 的区别。打开页面按 F12 → Console 能看到同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）</pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li>声明 <code>const myName</code> 存你的名字、<code>let myAge</code> 存你的年龄，用 show() 打印出来</li>
+        <li>试试 <code>show("字符串+数字", "5" + 3)</code> 和 <code>show("字符串*数字", "5" * 3)</code>，观察两个结果为什么不同（+ 遇到字符串是拼接，其他运算符会先把字符串转成数字）</li>
+        <li>用 typeof 打印 <code>null</code> 和 <code>undefined</code> 的类型——注意 null 的结果，这是 JS 著名的历史 bug，面试常考</li>
+        <li>比较 <code>"5" == 5</code> 和 <code>"5" === 5</code> 并打印结果，用一句话说出它们的区别</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ================= 0. show() 是什么 =================
+    // show 是个小工具函数：把结果同时显示到页面结果区和浏览器控制台。
+    // 现在照抄就行，学完 DOM 那课你就能自己写它了。
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    // ================= 1. 声明变量：let / const =================
+    // let：可以重新赋值。const：常量，赋值后不能再改（改了会报错）。
+    // var 是老写法，作用域有坑，现在统一用 let/const 声明，面试也爱问这一点。
+    let count = 42;          // let 声明 + 赋值
+    const appName = "Mitta"; // const 声明 + 赋值
+    show("count", count);
+    show("appName", appName);
+
+    // ================= 2. 五种基本数据类型 =================
+    let str = "你好";      // string 字符串（单引号/双引号都行）
+    let num = 2026;        // number 数字（整数和小数都是它）
+    let isOk = true;       // boolean 布尔（只有 true / false 两个值）
+    let empty = null;      // null 空值：表示"这里故意什么都没有"
+    let notSet;            // undefined：声明了但没赋值
+    show("str", str);
+    show("num", num);
+    show("isOk", isOk);
+    show("empty", empty);
+    show("notSet", notSet);
+
+    // ================= 3. typeof：查变量的类型 =================
+    show("typeof num", typeof num);
+    show("typeof str", typeof str);
+    show("typeof empty", typeof empty);
+    show("typeof notSet", typeof notSet);
+
+    // ================= 4. 类型转换（面试重点） =================
+    // 显式转换：Number("5") 转数字、String(5) 转字符串、Boolean(1) 转布尔
+    show("Number('5')", Number("5"));
+    show("String(5)", String(5));
+
+    // 隐式转换：+ 遇到字符串会"拼接"；其他运算符（- * /）会先把字符串转成数字
+    show("'5' + 1", "5" + 1);   // 结果 "51"：拼接成了字符串
+    show("'5' * 3", "5" * 3);   // 结果 15：先转成数字再乘
+
+    // == 会先转类型再比较（宽松），=== 不转直接比（严格，推荐用这个）
+    show("'5' == 5", "5" == 5);   // true：字符串被转成数字后相等
+    show("'5' === 5", "5" === 5); // false：类型不同，直接不相等
+  </script>
+</body>
+</html>

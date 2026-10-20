@@ -41,7 +41,12 @@
     }
     /* ========== 阶段0 回顾 ③：伪类选择器 ==========
        :hover 是 CSS3 重点，鼠标悬停时生效，是最常用的交互反馈 */
-    nav a:hover { text-decoration: underline; }
+    nav a:hover { 
+      text-decoration: underline;
+      background: #eef2ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+     }
 
     main { padding: 0 24px 24px; }
 
@@ -49,6 +54,7 @@
     .cards {
       display: flex;
       flex-wrap: wrap;
+      flex-direction: row; /* 主轴方向：水平排列 */
       gap: 16px;
     }
 
@@ -62,6 +68,7 @@
       border-left: 4px solid #2563eb; /* 左边一条彩条做视觉强调 */
       border-radius: 10px;            /* CSS3 圆角 */
       padding: 16px 18px;             /* 内边距：内容不贴卡片边缘 */
+      box-shadow: 0 4px 8px rgba(0,0,0,.15); /* 阴影效果，练习 CSS3 */
     }
     .card h2 { font-size: 16px; margin-bottom: 6px; }
     .card p { font-size: 14px; color: #4b5563; }
@@ -117,6 +124,10 @@
       <article class="card" id="stage3">
         <h2>阶段三 · 小项目</h2>
         <p>记账本 / 天气查询</p>
+      </article>
+      <article class="card" id="stage4">
+        <h2>阶段四 · 复现项目</h2>
+        <p>仿写热门网站 / 实现经典效果</p>
       </article>
     </section>
 
