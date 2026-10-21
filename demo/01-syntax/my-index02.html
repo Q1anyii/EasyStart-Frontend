@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>my-index02 · 运算符与流程控制（预习实验）</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>my-index02 · 运算符与流程控制（预习实验）</h1>
+    <p class="sub">从 my-index01 拆出的 if / switch / for / while 实验代码（原样保留你的写法）。打开页面按 F12 → Console 有同样输出。</p>
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）</pre>
+    <section class="tasks">
+      <h2>待修任务（搬过来后正好练手）</h2>
+      <ol>
+        <li><code>flag</code> 和 <code>j</code> 都没有声明（隐式全局变量）——给它们加上 <code>let</code>（这是上轮 review 讲过的坑）</li>
+        <li><code>j &lt;= i</code>（i=2）会跑 3 次——想清楚你要几次：改成 <code>j &lt; i</code>，或者确认 3 次就是你要的</li>
+        <li>打开控制台观察 <code>while</code> 循环：i 从几开始递减？为什么不是从 3 开始？（提示：for 循环结束后 i 还剩多少）</li>
+      </ol>
+    </section>
+  </div>
+  <script>
+    function show(label, value) {
+        out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+        console.log("【" + label + "】=", value);
+    }
+    flag = Boolean(0)
+    if (flag === true) {
+        show("flag = Boolean(0)", flag)
+    }
+    switch (flag) {
+        case true:
+            show("flag", flag);
+            break;
+        case false:
+            show("flag", flag);
+            break;
+        default:
+            show("flag 不是布尔", flag);
+    }
+    let i = 2
+    for (j = 0; j <= i; j++){
+        show("J Value", j)
+    }
+    while (i){
+        show("I Value", i)
+        i --;
+    }
+  </script>
+</body>
+</html>
