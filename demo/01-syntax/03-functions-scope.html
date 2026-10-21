@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第3课 · 函数与作用域</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第3课 · 函数与作用域</h1>
+    <p class="sub">本课目标：会写函数声明和箭头函数，理解 return 返回值，理解全局 / 函数 / 块级三层作用域。打开页面按 F12 → Console 有同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）</pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li>用<strong>函数声明</strong>写一个 <code>greet(name)</code>，返回问候语字符串；再把它改写成<strong>箭头函数</strong>，两种写法都调用打印</li>
+        <li>用<strong>单行箭头函数</strong>（省略花括号和 return 的那种）写 <code>adult(age)</code>，返回 <code>age &gt;= 18</code> 的判断结果，分别试 17 和 18</li>
+        <li>实验<strong>块级作用域</strong>：在 <code>if (true) { ... }</code> 里分别用 <code>let</code> 和 <code>var</code> 声明一个变量，块外打印它们——观察 let 报错（块级作用域）、var 能访问（var 没有块级作用域）</li>
+        <li>默认参数：写 <code>function fn(a, b = 10)</code>，只传一个参数调用，打印结果，观察 b 用了默认值</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄即可） ==========
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    // ========== 1. 函数声明：function 关键字 ==========
+    // 函数 = 把一段逻辑装起来，给它起个名字，需要时"调用"。
+    // return 的作用：把结果交出去，调用处就能拿到这个值。
+    function add(a, b) {
+      return a + b;          // 返回结果
+    }
+    show("add(1, 2)", add(1, 2));
+
+    // 函数声明有"提升"（hoisting）特性：可以先调用、后声明，不报错
+    show("hoisted() 先调用后声明", hoisted());
+    function hoisted() {
+      return "我是后面声明的函数，照样能用（提升）";
+    }
+
+    // 没有 return 的函数，返回值是 undefined
+    function justLog(msg) {
+      console.log("打印：" + msg);
+      // 这里没有 return
+    }
+    show("justLog('hi') 的返回值", justLog("hi"));
+
+    // ========== 2. 箭头函数：更简洁的写法 ==========
+    // 单行时：自动返回箭头后面的表达式结果（不用写 return）
+    const multiply = (a, b) => a * b;
+    show("multiply(3, 4)", multiply(3, 4));
+
+    // 只有一个参数时，括号也可以省略
+    const double = n => n * 2;
+    show("double(5)", double(5));
+
+    // 多语句时：用花括号包起来，必须显式写 return（和普通函数一样）
+    const divide = (a, b) => {
+      if (b === 0) {
+        return "不能除以0";
+      }
+      return a / b;
+    };
+    show("divide(10, 2)", divide(10, 2));
+    show("divide(10, 0)", divide(10, 0));
+
+    // 注意（面试伏笔）：箭头函数没有自己的 this，后面讲 this 时细说，先记住这一句
+
+    // ========== 3. 默认参数（ES6） ==========
+    // 调用时少传的参数，用等号后面的默认值顶上
+    function fn(a, b = 10) {
+      return a + b;
+    }
+    show("fn(1) 只传一个", fn(1));    // b 用默认值 10 → 11
+    show("fn(1, 2) 都传", fn(1, 2));  // b = 2 → 3
+
+    // ========== 4. 作用域：变量在哪儿"看得见" ==========
+    // 全局变量：函数外声明，任何地方都能读（包括函数内部）
+    let globalVar = "我是全局的";
+    show("globalVar（全局）", globalVar);
+
+    // 函数作用域：函数内声明的变量，外面访问不到（会报错）
+    function scopeDemo() {
+      let localVar = "我是函数局部的";
+      return localVar;
+    }
+    show("scopeDemo() 返回局部变量", scopeDemo());
+    // show("localVar", localVar);  // 取消注释试试：ReferenceError: localVar is not defined
+
+    // 块级作用域：let/const 只在自己的 {} 里有效；var 没有块级作用域
+    if (true) {
+      let blockVar = "只在if块里（let）";
+      var leakVar = "var 会漏出块";
+    }
+    // show("blockVar", blockVar);  // 取消注释试试：ReferenceError
+    show("leakVar（var 漏出块）", leakVar);  // var 能访问 → 说明它没有块级作用域
+
+    // 作用域链：内层（函数里）可以读外层（全局）的变量
+    function readGlobal() {
+      return globalVar + "（在函数里读到了）";
+    }
+    show("readGlobal()", readGlobal());
+  </script>
+</body>
+</html>
