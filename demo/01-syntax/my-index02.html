@@ -43,7 +43,7 @@
         out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
         console.log("【" + label + "】=", value);
     }
-    flag = Boolean(0)
+    const flag = Boolean(0)
     if (flag === true) {
         show("flag = Boolean(0)", flag)
     }
@@ -58,7 +58,7 @@
             show("flag 不是布尔", flag);
     }
     let i = 2
-    for (j = 0; j <= i; j++){
+    for (let j = 0; j < i; j++){
         show("J Value", j)
     }
     while (i){
