@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第5课 · 对象与 JSON</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第5课 · 对象与 JSON</h1>
+    <p class="sub">本课目标：会用 {} 创建对象、读改属性、遍历键；理解"引用类型 vs 值类型"（面试必考）；会用 JSON.stringify / JSON.parse 在对象和字符串之间转换。打开页面按 F12 → Console 有同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）<br></pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li>创建你自己的对象 <code>me</code>（name / age / city 三个属性），用<strong>点语法</strong>读 age、用<strong>方括号</strong>读 city，打印</li>
+        <li>给 <code>me</code> 加一个 hobby 属性、改一个已有属性；再用 <code>Object.keys(me)</code> 打印所有键，并打印键的个数</li>
+        <li>引用实验（两段对比写）：①复制数字再改，观察互不影响；②复制对象再改，观察原对象跟着变——用注释写下你看到的规律</li>
+        <li>JSON 实验：把 <code>me</code> 用 <code>JSON.stringify</code> 转成字符串打印，再用 <code>JSON.parse</code> 转回对象，读一个属性打印</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    const me = {name: "谦亦", age: 21, city: "NanChang"}
+    show("me.age", me.age)
+    show("me['city']", me['city'])
+    me['hobby'] = "Play Games"
+    show("me.hobby", me.hobby)
+    let hobby = "Programming"
+    me['hobby'] = hobby
+    show("new me.hobby", me.hobby)
+    const keys = Object.keys(me)
+    show("all keys of me", keys + " len:" + keys.length)
+    const newMe = me
+    newMe.name = "Qianyi"
+    show("new me name", newMe.name)
+    show("original me name", me.name) // 赋值直接复制引用
+    let age = me.age
+    age = 10
+    show("copied age", age)
+    show("me.age 还是", me.age) // 基本类型按值复制：改 age 不影响 me.age
+    const serializedMe = JSON.stringify(me)
+    show("serialized me", serializedMe)
+    const parsedSerializedMe = JSON.parse(serializedMe)
+    show("parsed name", parsedSerializedMe.name)
+
+  </script>
+</body>
+</html>
