@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第4课 · 数组与常用方法</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第4课 · 数组与常用方法</h1>
+    <p class="sub">本课目标：会创建数组、会用 push/pop 增删、会用 map/filter/find/reduce 四件套处理数据——它们是面试手写题和日常开发的重灾区。打开页面按 F12 → Console 有同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）</pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li>建一个数字数组 <code>scores</code>（5 个数），用 <code>push</code> 加一个、<code>pop</code> 删一个，打印数组内容和 <code>scores.length</code></li>
+        <li>用 <code>map</code> 把 scores 每个元素翻倍（×2），打印新数组；再用一行注释说明 map 会不会改变原数组</li>
+        <li>用 <code>filter</code> 从 scores 里筛出所有大于 60 的数（模拟及格线），打印结果</li>
+        <li>用 <code>reduce</code> 算 scores 的总和并打印；再挑战一次：用 reduce 求 scores 的最大值（提示：<code>(acc, cur) =&gt; cur &gt; acc ? cur : acc</code>，初始值 0）</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    // ========== 1. 数组：把多个值装进一个变量 ==========
+    // 用方括号 [] 创建数组，元素从下标 0 开始数
+    const fruits = ["苹果", "香蕉", "橘子"];
+    show("fruits", fruits);
+    show("fruits.length", fruits.length);   // 3
+    show("fruits[0]", fruits[0]);           // 苹果（第1个是下标0）
+
+    // ========== 2. 增删：push / pop（注意：它们会改原数组） ==========
+    fruits.push("西瓜");                    // 尾部加一个，改原数组
+    show("push 之后", fruits);
+    const last = fruits.pop();              // 尾部删一个，返回被删的元素
+    show("pop 返回的", last);
+    show("pop 之后", fruits);
+
+    // ========== 3. map：每个元素"映射"成新数组（不改原数组！） ==========
+    // 第3课的箭头函数在这里派上用场了：n => n * 2 对每个元素算一遍
+    const nums = [1, 2, 3, 4];
+    const doubled = nums.map(n => n * 2);
+    show("map ×2 结果", doubled);           // 2,4,6,8
+    show("原数组没变", nums);               // 1,2,3,4 —— map 返回新数组
+
+    // ========== 4. filter：筛选出满足条件的元素（也不改原数组） ==========
+    const evens = nums.filter(n => n % 2 === 0);   // 留下偶数
+    show("filter 偶数", evens);
+
+    // ========== 5. find：找第一个满足条件的元素 ==========
+    const firstBig = [5, 12, 8].find(n => n > 10);
+    show("find 第一个 >10", firstBig);      // 12
+    show("find 找不到返回", [1, 2].find(n => n > 10));  // undefined
+
+    // ========== 6. reduce：把整个数组"累计"成单个值（最抽象，重点看注释） ==========
+    // reduce(回调, 初始值)：回调拿两个参数——acc 是"累加器"（上一轮的结果），cur 是"当前元素"
+    // 过程：0 + 1 → 1 + 2 → 3 + 3 → 6 + 4 → 10
+    const sum = nums.reduce((acc, cur) => acc + cur, 0);
+    show("reduce 总和", sum);               // 10
+
+    // ========== 7. forEach：单纯遍历一遍（不返回任何东西） ==========
+    let count = 0;
+    nums.forEach(n => { count += n; });
+    show("forEach 累加", count);
+  </script>
+</body>
+</html>
