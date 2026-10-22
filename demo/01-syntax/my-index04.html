@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段一第4课 · 数组与常用方法</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;}
+        body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+
+    </style>
+</head>
+
+<body>
+   <div class="wrap">
+    <h1>阶段一第4课 · 数组与常用方法</h1>
+    <p class="sub">本课目标：会创建数组、会用 push/pop 增删、会用 map/filter/find/reduce 四件套处理数据——它们是面试手写题和日常开发的重灾区。打开页面按 F12 → Console 有同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）<br></pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li>建一个数字数组 <code>scores</code>（5 个数），用 <code>push</code> 加一个、<code>pop</code> 删一个，打印数组内容和 <code>scores.length</code></li>
+        <li>用 <code>map</code> 把 scores 每个元素翻倍（×2），打印新数组；再用一行注释说明 map 会不会改变原数组</li>
+        <li>用 <code>filter</code> 从 scores 里筛出所有大于 60 的数（模拟及格线），打印结果</li>
+        <li>用 <code>reduce</code> 算 scores 的总和并打印；再挑战一次：用 reduce 求 scores 的最大值（提示：<code>(acc, cur) =&gt; cur &gt; acc ? cur : acc</code>，初始值 0）</li>
+      </ol>
+    </section>
+   </div>
+    <script>
+        function show(label, value){
+            out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+            console.log("【" + label + "】=", value);
+        }
+        const scores = [88, 45, 72, 61, 33]
+        scores.push(50)
+        show("scores.length", scores.length +" to "+ scores)
+        scores.pop()
+        show("scores.length", scores.length +" to "+ scores)
+        const mappedScores = scores.map(s => s * 2);  // map 不改原数组，返回新数组
+        show("scores.map(s => s * 2)", mappedScores.length +" to "+ mappedScores)
+        show("original scores", scores.length +" to "+ scores)
+        const filteredScores = scores.filter(s => s >= 60)
+        show("scores.filter(s => s >= 60)", filteredScores.length +" to "+ filteredScores)
+        const sum = scores.reduce((acc, cur) => acc + cur, 0)
+        show("scores.reduce()", sum)
+        const max = scores.reduce((acc, cur) => acc > cur ? acc : cur)
+        show("max of scores", max)
+        let count = 0;
+        scores.forEach(cur => {count += cur})
+        show("reduce in forEach of scores", count)
+    </script>
+</body>
+</html>
