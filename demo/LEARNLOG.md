@@ -18,6 +18,7 @@
 | 2026.10.20| HTML/CSS 回顾 | 盒子模型、弹性布局 | 无 | 10min | 添加一个盒子|
 | 2026.10.20 19:09 | 第1课 my-index01（变量与数据类型） | let/const、5种基本类型、typeof、== vs ===、falsy清单、模板字符串、NaN三坑 | typeof NaN 反直觉、NaN === NaN 为 false、Boolean('0') 是真值、id自动变全局变量 | 待补 | 任务1~8（任务5报错实验未补）+Set彩蛋 |
 | 2026.10.21 19:09 | 第2课 my-index02（运算符与流程控制） | if/switch（break、===）、for/while、循环边界、隐式全局 vs let声明 | flag/j 忘声明（隐式全局）、switch缺break穿透、j<=i跑3次 | 待补 | 3个待修任务全过 |
+| 2026.10.22 19:52 | 第3课 my-index03（函数与作用域） | 函数声明/提升、箭头函数（单行隐式return/多语句显式return）、返回值、默认参数、作用域三层（全局/函数/块级）、let vs var | 任务2一开始写成花括号+显式return（没get到单行隐式return）、多余的&lt;/div&gt; | 待补 | 4个改动任务全过（任务2修正为单行箭头） |
 
 ## 阶段进度
 
@@ -25,7 +26,7 @@
 - [ ] **阶段一 · JS 语法**（每个点配 demo，做完勾选）：
   - [x] 变量与数据类型（let/const、string/number/boolean、类型转换）
   - [x] 运算符与流程控制（if/switch、for/while）
-  - [ ] 函数与作用域（声明式/箭头函数、返回值、作用域）
+  - [x] 函数与作用域（声明式/箭头函数、返回值、作用域）
   - [ ] 数组与常用方法（push/map/filter/find/reduce）
   - [ ] 对象与 JSON
   - [ ] 字符串与 ES6 常用（模板字符串、解构、展开）
