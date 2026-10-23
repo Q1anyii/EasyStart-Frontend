@@ -24,6 +24,7 @@
 | 2026.10.23 17:34 | 第6课 my-index06（字符串与ES6常用） | 模板字符串（插值/多行）、解构（数组/对象、别名/默认值、一行交换）、展开（Math.max/合并/浅拷贝） | 解构与展开概念混淆（解构不创建新对象，展开才创建浅拷贝副本）；交换实验第一遍漏写；自创实验比较式有误导 | 20min | 4个改动任务全过（交换实验+reduce对比补齐） |
 | 2026.10.23 18:09 | 第7课 my-index07（DOM操作） | 选中元素（getElementById/querySelector/querySelectorAll）、textContent vs innerHTML、style.xxx驼峰命名、createElement/appendChild/prepend、id自动挂window彩蛋 | 任务1第一遍漏打印现有文本和写彩蛋注释；appendChild"换位置"实验理解了元素只有"一个家" | 30min | 4个改动任务全过（含自创appendChild移动实验验证） |
 | 2026.10.23 18:56 | 第8课 my-index08（事件） | addEventListener（click/input/keydown）、事件对象e（target/key/preventDefault）、mouseover布局抖动问题、==改=== | bnt拼错getElementById返回null、mouseover+show导致布局下移按钮难点、空格键分支第一遍漏写 | 45min | 4个改动任务全过（含把mouseover挪到clean解决交互冲突） |
+| 2026.10.23 19:56 | 第9课 my-index09（异步入门） | setTimeout、Promise三状态（pending/fulfilled/rejected）、.then/.catch、async/await+try/catch改写、fetch两步await（链式+await两种写法都实践） | p2的setTimeout参数错位（3000跑进resolve没生效）、resolve/pending拼写、状态名理解（resolve/reject是函数非状态） | 60min | 4个改动任务全过（fetch两种风格+按钮切换成功/失败） |
 
 ## 阶段进度
 
@@ -37,7 +38,7 @@
   - [x] 字符串与 ES6 常用（模板字符串、解构、展开）
   - [x] DOM 操作（选中元素、改内容/样式、创建元素）
   - [x] 事件（click/input/keydown、事件对象）
-  - [ ] 异步入门（setTimeout、Promise、async/await、fetch）
+  - [x] 异步入门（setTimeout、Promise、async/await、fetch）
 - [ ] **阶段二 · 语法整合 demo**：待办清单 / 随机点名器 / 图片轮播 / 简易计算器
 - [ ] **阶段三 · 小项目**：记账本（localStorage）/ 天气查询页（fetch）
 - [ ] **阶段四 · 复现项目**：chat-stream-lite
