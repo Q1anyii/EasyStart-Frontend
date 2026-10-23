@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第9课 · 异步入门</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .experiment { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; font-size: 14px; }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第9课 · 异步入门</h1>
+    <p class="sub">本课目标：理解同步 vs 异步（代码顺序 ≠ 执行顺序）；会用 setTimeout 定时；会用 Promise 的 .then / .catch；会用 async/await 把异步写成同步的样子；会用 fetch 请求网络数据。这是阶段一最后一课，也是阶段二小项目（记账本、天气查询页）的技术地基。打开页面，看输出的先后顺序。</p>
+
+    <h2>运行结果（show() 输出）</h2>
+    <pre class="out" id="out">（结果会按"执行顺序"一行行冒出来，注意哪行先、哪行后）<br></pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>setTimeout</strong>：自己写一个 2 秒后打印"两秒到了"的 setTimeout；再写一个 500ms 后打印"半秒先到"的；注释写一句：为什么 500ms 的反而先打印</li>
+        <li><strong>Promise 两种结局</strong>：新建一个 Promise，1 秒后 <code>resolve("成功A")</code>，用 .then 打印；再造一个 <code>reject("失败B")</code>，用 .catch 打印；注释写出 Promise 的三种状态名</li>
+        <li><strong>async/await 改写</strong>：把任务2里"成功A"那个 Promise 用 async 函数 + await 改写（不用 .then/.catch，改用 try/catch），打印结果</li>
+        <li><strong>fetch</strong>：请求 <code>https://jsonplaceholder.typicode.com/todos/2</code>，打印它的 title；有网你会看到数据，没网会打印错误——两种结果都注释说明一下</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    function show(label, value) {
+      window.out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    // ========== 1. 同步 vs 异步：代码顺序 ≠ 执行顺序 ==========
+    show("同步①", "第1行，立即执行");
+    setTimeout(() => {
+      show("定时器（1000ms）", "第2行代码写在这，但要等1秒才执行");
+    }, 1000);
+    show("同步②", "第3行，紧跟着立即执行");
+    // 实际打印顺序：同步① → 同步② → 定时器（1秒后才冒出来）
+    // 原因：JS 单线程，定时器交给浏览器后台；时间到了再把回调"插队"回执行队列
+
+    // ========== 2. Promise：把"未来的结果"包装成对象 ==========
+    // 三种状态：pending（等待中）→ fulfilled（成功，调 resolve）/ rejected（失败，调 reject）
+    // .then 接成功结果，.catch 接失败原因
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("第一次成功！"), 1500);
+    });
+    myPromise
+      .then(result => show("Promise.then", result))
+      .catch(err => show("Promise.catch", err));
+    show("Promise 此刻状态", "pending（异步还没完成）");
+
+    // ========== 3. async/await：把异步写成同步的样子 ==========
+    // async 函数总是返回 Promise；await 会"暂停"函数，等前面的 Promise 完成再继续
+    // 结果上：await 后面跟 Promise，等它 fulfilled，把结果赋给左边变量
+    async function waitAndSay(msg) {
+      await new Promise(r => setTimeout(r, 800)); // 等 800ms
+      return msg;
+    }
+    // async 函数返回值外面要用 .then 拿（或者再用 await——但顶层不能直接 await）
+    waitAndSay("await 等到了我").then(msg => show("async 结果", msg));
+
+    // ========== 4. fetch：请求网络数据（async/await 版） ==========
+    // 有网：拿到数据走 try；没网：抛错走 catch —— 两种情况都写了
+    async function loadTodo() {
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+        const data = await res.json();
+        show("fetch 成功", "待办：" + data.title + "（id=" + data.id + "）");
+      } catch (err) {
+        show("fetch 失败", "网络不可用：" + err.message);
+      }
+    }
+    loadTodo();
+  </script>
+</body>
+</html>
