@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第6课 · 字符串与 ES6 常用</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第6课 · 字符串与 ES6 常用</h1>
+    <p class="sub">本课目标：会用反引号模板字符串（插值/多行）；会用解构从数组/对象"拆"变量；会用展开运算符 ...（Math.max、合并、浅拷贝）。这三样是 Vue3 / React 天天见的语法。打开页面按 F12 → Console 有同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）<br></pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>模板字符串</strong>：用反引号 + <code>${}</code> 写一句完整自我介绍（至少插 3 个变量）；再写一个 3 行的多行字符串，打印</li>
+        <li><strong>数组解构</strong>：<code>const [first, second, ...rest] = scores</code> 拆开打印三部分；再用解构一行交换两个变量 a/b，打印交换前后</li>
+        <li><strong>对象解构</strong>：从你的 <code>me</code> 对象解构出 name/city，用<strong>别名</strong>和<strong>默认值</strong>各一次，打印</li>
+        <li><strong>展开</strong>：用 <code>Math.max(...scores)</code> 求最大（和第4课 reduce 的结果对比，应一样）；再用 <code>{...me, 新属性}</code> 造一个副本，改副本的 age，打印原对象 age 证明没变（呼应第5课引用实验）</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    // ========== 1. 模板字符串（反引号 ``） ==========
+    // 反引号包住字符串，${表达式} 往里面插值（表达式可以是变量、运算、函数调用）
+    // 还能直接换行，不用 \n —— 这就是"多行字符串"
+    const name = "谦亦", age = 21, city = "南昌";
+    const intro = `我叫${name}，今年${age}岁，来自${city}，加起来${age + 1}岁就是明年了`;
+    show("intro 模板字符串", intro);
+    const poem = `第一行：每天进步一点
+第二行：语法到小项目
+第三行：目标 TS 版 Agent`;
+    show("poem 多行字符串", poem);
+
+    // 对比老写法：单引号/双引号不能插值，只能 + 拼接（丑且容易漏）
+    const oldWay = "我叫" + name + "，今年" + age + "岁";
+    show("oldWay 老写法拼接", oldWay);
+
+    // ========== 2. 解构 Destructuring：从数组/对象"拆"出变量 ==========
+    // 数组解构：按位置取；...rest 把剩下的收成新数组
+    const colors = ["red", "green", "blue", "yellow", "purple"];
+    const [first, second, ...restColors] = colors;
+    show("first / second", first + " / " + second);
+    show("restColors 剩下的", restColors);
+
+    // 经典骚操作：一行交换两个变量（不用第三个临时变量）
+    let a = 1, b = 2;
+    [a, b] = [b, a];
+    show("交换后 a / b", a + " / " + b);
+
+    // 对象解构：按属性名取值（顺序无所谓）
+    // 别名：属性名不想要可以改名；默认值：对象里没有这个属性时用兜底值
+    const me = { name: "谦亦", age: 21, city: "南昌" };
+    const { name: myName, city: hometown, gender = "unknown" } = me;
+    show("myName 解构+别名", myName);
+    show("hometown 解构+别名", hometown);
+    show("gender 默认值", gender);
+
+    // ========== 3. 展开运算符 ...：把数组/对象"摊开" ==========
+    // Math.max 不接受数组，... 把它展开成一个个参数 —— 第4课 reduce 求最大值，这里一行搞定
+    const scores = [78, 92, 85, 60];
+    show("Math.max(...scores)", Math.max(...scores));
+    // 数组合并：把两个数组拼起来
+    const more = [...colors, ...scores];
+    show("more 数组合并 length", more.length);
+    // 对象浅拷贝：{...me} 复制一份，改副本不影响原对象 —— 第5课说的"想让 a、b 真独立"
+    const meCopy = { ...me, hobby: "Programming" };
+    meCopy.age = 99;
+    show("meCopy.age 改成99", meCopy.age);
+    show("原 me.age 没变", me.age);
+  </script>
+</body>
+</html>
