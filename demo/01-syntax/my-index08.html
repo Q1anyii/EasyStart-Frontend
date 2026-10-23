@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第8课 · 事件（Events）</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .experiment { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; font-size: 14px; }
+    .experiment button { padding: 6px 16px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f1f5f9; cursor: pointer; font-size: 14px; }
+    .experiment button:hover { background: #e2e8f0; }
+    .experiment input { padding: 6px 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 14px; width: 60%; }
+    .experiment #preview { margin-top: 8px; padding: 8px 10px; background: #f8fafc; border-radius: 6px; color: #4b5563; }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第8课 · 事件（Events）</h1>
+    <p class="sub">本课目标：会用 addEventListener 绑定点击/输入/键盘事件；会用事件对象 e（target / key / preventDefault）；理解"DOM + 事件 = 交互"。之前 7 课的代码一打开就执行；事件让代码"等用户操作再执行"。先打开页面玩一玩下面的按钮和输入框，再看代码。</p>
+
+    <h2>运行结果（show() 输出）</h2>
+    <pre class="out" id="out">（结果会显示在这里，先去玩按钮和输入框）<br></pre>
+
+    <h2>实验区</h2>
+    <div class="experiment">
+      <button id="btn">点我 +1</button>
+      <span>计数：<b id="counter">0</b></span>
+      <br><br>
+      <button id="btn2">点我 +2</button>
+      <span>计数：<b id="counter2">0</b></span>
+      <button id="clean">重置</button>
+      <br><br>
+      <input id="input" placeholder="输入点什么，看实时预览">
+      <div id="preview">（预览会显示在这里）</div>
+    </div>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。做完后双击按钮、在输入框里打字试试效果。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>事件改造</strong>：照着 #btn 的写法，新建一个 <code>#btn2</code> 按钮（HTML 和 JS 都要写），点击后把计数清零（<code>clickCount = 0</code> 并更新显示）——这是"看得懂→写得出"第一关</li>
+        <li><strong>换事件名</strong>：给 #btn 绑一个 <code>mouseover</code> 事件（鼠标移上去触发），打印 <code>e.target</code> 的 tagName 和 textContent</li>
+        <li><strong>预览升级</strong>：把 #preview 的显示改成带字符计数，如 <code>预览（3字）：abc</code>——用 <code>e.target.value.length</code> 拿到长度</li>
+        <li><strong>keydown 扩展</strong>：按 <code>空格键</code>（e.key 是 " "）打印"空格被按"，按 <code>Escape</code>（e.key 是 "Escape"）打印"按了 Esc"；注释写一句 <code>e.preventDefault()</code> 的作用</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    function show(label, value) {
+      window.out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+    const btn2 = document.getElementById("btn2")
+    const cou = document.getElementById("counter2")
+    btn2.addEventListener("click", () => {
+        cou.textContent = Number(cou.textContent) + 2
+        show("点击", "count = " + cou.textContent)
+    })
+    const clean = document.getElementById("clean")
+    clean.addEventListener("mouseover", () =>{
+        cou.textContent = 0
+        show("重置", "count=" + cou.textContent)
+    })
+    const btn = document.getElementById("btn")
+    const count = document.getElementById("counter")
+    btn.addEventListener("click", (e) =>{
+        count.textContent = Number(count.textContent) + 1
+        show("btn.tagName", e.target.tagName)
+        show("btn.textContent", e.target.textContent)
+    })
+
+    const preview = document.getElementById("preview")
+    const input = document.getElementById("input")
+    input.addEventListener("input", (e)=>{
+        preview.textContent = `预览（${e.target.value.length}）: ${e.target.value}`
+    })
+    input.addEventListener("keydown", (e)=> {
+        if (e.key === "Escape"){
+            e.preventDefault(); //用于阻止自定义的默认行为
+            show("you could not escape", e.key) 
+            return 
+        }
+        if (e.key === " "){
+            show("空格被按", e.key)
+            return
+        }
+        show("curr keydown", e.key)
+    })
+  </script>
+</body>
+</html>
