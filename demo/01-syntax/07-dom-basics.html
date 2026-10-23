@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第7课 · DOM 操作</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .experiment { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; font-size: 14px; }
+    .experiment > div { padding: 8px 10px; border-radius: 6px; background: #f8fafc; margin-bottom: 8px; }
+    .experiment ul { margin: 0; padding-left: 22px; }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第7课 · DOM 操作</h1>
+    <p class="sub">本课目标：会用三种方式选中元素、改内容（textContent / innerHTML）、改样式（style.xxx）、创建并挂载元素（createElement / appendChild）。从这课起，你的 JS 开始真正操控网页——你从第1课就在用的 show() 里那个 out.innerHTML，就是 DOM 操作。</p>
+
+    <h2>运行结果（show() 输出）</h2>
+    <pre class="out" id="out">（结果会显示在这里）<br></pre>
+
+    <h2>实验区（下面几个元素会被脚本改到）</h2>
+    <div class="experiment">
+      <div id="demo">这是 demo：一会儿会被脚本改内容和样式</div>
+      <div id="demo2">这是 demo2：演示 textContent 与 innerHTML 的区别</div>
+      <ul id="list"><li>列表原有第1项</li></ul>
+    </div>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>选中元素</strong>：用 <code>getElementById</code> 和 <code>querySelector</code> 各选一次 <code>#demo</code>，打印选中元素的 tagName 和现有文本；读完注释里的"id 彩蛋"后，用一句话注释写出：为什么 <code>out</code> 不用选中就能直接用</li>
+        <li><strong>内容实验</strong>：给 <code>#demo2</code> 先 <code>textContent</code> 写入 <code>&lt;b&gt;加粗吗&lt;/b&gt;</code>（观察不变粗），再 <code>innerHTML</code> 写入同样的文字（观察变粗），注释写一句两者的区别</li>
+        <li><strong>样式实验</strong>：把 <code>#demo</code> 的 3 个样式属性改掉（颜色 / 字号 / 背景色），运行看效果，注意 style 里是驼峰命名（如 <code>fontSize</code> 不是 font-size）</li>
+        <li><strong>创建元素</strong>：用 <code>createElement</code> 造 3 个 <code>&lt;li&gt;</code>（内容自定，比如今天日期 / 课次 / 一句鼓励），<code>appendChild</code> 到 <code>#list</code>；再造 1 个 <code>prepend</code> 到最前面；最后打印 <code>list.childElementCount</code> 验证总数</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    // 彩蛋答案：show() 里直接写 out.innerHTML —— out 哪来的？
+    // HTML 规范把带 id 的元素自动挂到 window 上：out === window.out。
+    // 这是遗留行为（能用但不推荐依赖），你现在知道它为什么能用了。
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+
+    // ========== 1. 选中元素 ==========
+    // DOM 树：document → html → body → ... → pre#out、div#demo、ul#list
+    // 三种选法：
+    //  getElementById("id")   按 id 精确选一个（最快最常用）
+    //  querySelector("选择器")  CSS 选择器语法，选第一个（#id / .class / 标签都行）
+    //  querySelectorAll("选择器") 选所有，返回类数组 NodeList
+    const byId = document.getElementById("demo");
+    const byCss = document.querySelector("#demo");
+    show("getElementById tag", byId.tagName);
+    show("querySelector 是否同一个元素", byId === byCss); // true：同一节点
+
+    // ========== 2. 改内容：textContent vs innerHTML ==========
+    // textContent：当纯文本写，标签不解析（安全，防 XSS）
+    // innerHTML：当成 HTML 解析，<b> 会真的加粗（灵活，但别把用户输入塞进来）
+    const demo2 = document.getElementById("demo2");
+    demo2.textContent = "<b>加粗吗</b>";   // 显示字面 <b>加粗吗</b>，不会加粗
+    demo2.innerHTML = "<b>加粗吗</b>";     // 真的加粗：这就是 out 显示结果的方式
+
+    // ========== 3. 改样式：style.xxx（驼峰命名） ==========
+    const demo = document.getElementById("demo");
+    demo.style.color = "#f97316";      // font-size 在 JS 里要写 fontSize
+    demo.style.fontSize = "18px";
+    demo.style.background = "#ffedd5";
+    demo.style.padding = "10px 14px";
+
+    // ========== 4. 创建元素：createElement + 挂载 ==========
+    // 步骤：造出来 → 填内容 → 挂到父节点（appendChild 末尾 / prepend 开头）
+    const li = document.createElement("li");
+    li.textContent = "新元素：" + new Date().toLocaleTimeString();
+    document.getElementById("list").appendChild(li);
+
+    const firstLi = document.createElement("li");
+    firstLi.textContent = "我插到最前面（prepend）";
+    document.getElementById("list").prepend(firstLi);
+
+    const list = document.getElementById("list");
+    show("list.childElementCount 子元素个数", list.childElementCount);
+  </script>
+</body>
+</html>
