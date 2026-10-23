@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段一第6课 · 字符串与 ES6 常用</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .out {
+      background: #111827; color: #d1fae5; font-family: Consolas, "Courier New", monospace;
+      font-size: 14px; padding: 14px 16px; border-radius: 10px;
+      white-space: pre-wrap; word-break: break-all; min-height: 60px;
+    }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段一第6课 · 字符串与 ES6 常用</h1>
+    <p class="sub">本课目标：会用反引号模板字符串（插值/多行）；会用解构从数组/对象"拆"变量；会用展开运算符 ...（Math.max、合并、浅拷贝）。这三样是 Vue3 / React 天天见的语法。打开页面按 F12 → Console 有同样的输出。</p>
+
+    <h2>运行结果</h2>
+    <pre class="out" id="out">（结果会显示在这里）<br></pre>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍，最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>模板字符串</strong>：用反引号 + <code>${}</code> 写一句完整自我介绍（至少插 3 个变量）；再写一个 3 行的多行字符串，打印</li>
+        <li><strong>数组解构</strong>：<code>const [first, second, ...rest] = scores</code> 拆开打印三部分；再用解构一行交换两个变量 a/b，打印交换前后</li>
+        <li><strong>对象解构</strong>：从你的 <code>me</code> 对象解构出 name/city，用<strong>别名</strong>和<strong>默认值</strong>各一次，打印</li>
+        <li><strong>展开</strong>：用 <code>Math.max(...scores)</code> 求最大（和第4课 reduce 的结果对比，应一样）；再用 <code>{...me, 新属性}</code> 造一个副本，改副本的 age，打印原对象 age 证明没变（呼应第5课引用实验）</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 0. show() 小工具（照抄） ==========
+    function show(label, value) {
+      out.innerHTML += "【" + label + "】= " + String(value) + "<br>";
+      console.log("【" + label + "】=", value);
+    }
+    const name = "谦亦";
+    const age = 21;
+    const hobby = "唱、跳、rap、篮球";
+    const selfDescription = `我叫${name}, 今年${age}, 爱好是${hobby}`
+    show("self description", selfDescription)
+    const multiLineDescription = `
+    我叫${name}, 
+    今年${age}, 
+    爱好是${hobby}`
+    show("multi line self description", multiLineDescription)
+    const scores = [66, 99, 100,94]
+    let [first, second, ...rest] = scores
+    show("each in scores", `1:${first}, 2:${second}, 3:${rest}`)
+    let a = 1, b = 2;
+    [a, b] = [b, a]
+    show("交换后 a / b", a + " / " + b);
+    const col = "red";
+    first = col;
+    show("if scores changed", scores[0] == first)
+    const me = {name: name, age: age, city:"NanChang"}
+    const {name: myName, age: myAge, city, gender = "unknown"} = me
+    show("myName", myName)
+    show("myAge", myAge)
+    show("city", city)
+    show("if gender", gender)
+    const reduceMax = scores.reduce((max, cur) => max > cur ? max:cur)
+    show("scores.reduce()", reduceMax)
+    const max = Math.max(...scores)
+    show("Math.max(...scores)", max)
+    const newMe = {...me, gender: "man"}
+    newMe.age = "18"
+    show("if me equals newMe", `${newMe.age === me.age},me.age: ${me.age}, newMe.age: ${newMe.age}`)
+    
+  </script>
+</body>
+</html>
