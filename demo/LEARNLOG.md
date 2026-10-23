@@ -22,6 +22,7 @@
 | 2026.10.22 20:24 | 第4课 my-index04（数组与常用方法） | 数组创建、push/pop增删、map/filter/find/reduce四件套、forEach | reduce回调只写一个参数导致cur被忽略（s+=s变成翻倍而非求和）、sum忘声明（隐式全局）、拼写lenght/socres、标签与代码不一致 | 30min | 4个改动任务全过（reduce总和+挑战求最大值） |
 | 2026.10.22 20:43 | 第5课 my-index05（对象与JSON） | 对象创建/读写/遍历（Object.keys）、引用vs值类型、方法、JSON.stringify/parse | 从Python带过来的习惯：忘声明（本课已全部用const/let克服）；JSON相关拼写serialized/parsed错；引用实验对照打印漏了me.age | 30min | 4个改动任务全过（引用实验+JSON往返） |
 | 2026.10.23 17:34 | 第6课 my-index06（字符串与ES6常用） | 模板字符串（插值/多行）、解构（数组/对象、别名/默认值、一行交换）、展开（Math.max/合并/浅拷贝） | 解构与展开概念混淆（解构不创建新对象，展开才创建浅拷贝副本）；交换实验第一遍漏写；自创实验比较式有误导 | 20min | 4个改动任务全过（交换实验+reduce对比补齐） |
+| 2026.10.23 18:09 | 第7课 my-index07（DOM操作） | 选中元素（getElementById/querySelector/querySelectorAll）、textContent vs innerHTML、style.xxx驼峰命名、createElement/appendChild/prepend、id自动挂window彩蛋 | 任务1第一遍漏打印现有文本和写彩蛋注释；appendChild"换位置"实验理解了元素只有"一个家" | 30min | 4个改动任务全过（含自创appendChild移动实验验证） |
 
 ## 阶段进度
 
@@ -33,7 +34,7 @@
   - [x] 数组与常用方法（push/map/filter/find/reduce）
   - [x] 对象与 JSON
   - [x] 字符串与 ES6 常用（模板字符串、解构、展开）
-  - [ ] DOM 操作（选中元素、改内容/样式、创建元素）
+  - [x] DOM 操作（选中元素、改内容/样式、创建元素）
   - [ ] 事件（click/input/keydown、事件对象）
   - [ ] 异步入门（setTimeout、Promise、async/await、fetch）
 - [ ] **阶段二 · 语法整合 demo**：待办清单 / 随机点名器 / 图片轮播 / 简易计算器
