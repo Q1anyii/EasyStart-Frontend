@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段二 · 整合 Demo 1/4：待办清单</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 620px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .app { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; }
+    .add-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .add-row input {
+      flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #cbd5e1;
+      font-size: 14px; outline: none;
+    }
+    .add-row input:focus { border-color: #60a5fa; }
+    .add-row button, .clear-btn {
+      padding: 8px 16px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: #2563eb; color: #fff; cursor: pointer; font-size: 14px;
+    }
+    .add-row button:hover, .clear-btn:hover { background: #1d4ed8; }
+    .add-row .clear-btn { background: #ef4444; border-color: #ef4444; }
+    .add-row .clear-btn:hover { background: #dc2626; }
+    #todo-list { list-style: none; margin: 0 0 6px; padding: 0; }
+    #todo-list li {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 8px; background: #f8fafc;
+      margin-bottom: 8px; font-size: 14px;
+    }
+    #todo-list li .del {
+      margin-left: auto; padding: 3px 10px; border-radius: 6px; border: 1px solid #fecaca;
+      background: #fee2e2; color: #b91c1c; cursor: pointer; font-size: 12px;
+    }
+    #todo-list li .del:hover { background: #fecaca; }
+    #stats { font-size: 13px; color: #6b7280; margin-top: 10px; }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段二 · 整合 Demo 1/4：待办清单</h1>
+    <p class="sub">第一次把前面 9 课的知识拼起来干活：数组（存数据）+ 对象（每条待办）+ DOM（画列表）+ 事件（交互）。核心思想只有一个：<strong>数据变了 → 重新画一遍</strong>（这就是以后所有框架的雏形）。打开先玩一玩。</p>
+
+    <div class="app">
+      <div class="add-row">
+        <input id="todo-input" placeholder="要做点什么？">
+        <button id="add-btn">添加</button>
+        <button class="clear-btn">清除已完成</button>
+      </div>
+      <ul id="todo-list"></ul>
+      <p id="stats">共 0 条，已完成 0 条</p>
+    </div>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍（<code>my-todo-list.html</code>），最后做「改动任务」。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>删除功能</strong>：每个 li 加一个"删除"按钮，点击后把对应 todo 从数组删掉（<code>splice</code> 或 <code>filter</code> 二选一），再 <code>render()</code>；注释写一句你为什么选这个方法</li>
+        <li><strong>回车添加</strong>：在输入框按 Enter（<code>keydown</code> + <code>e.key === "Enter"</code>）也能添加，不许点按钮</li>
+        <li><strong>统计升级</strong>：在 #stats 里再加一项"未完成 X 条"（用 <code>filter</code> 把 done 为 false 的筛出来）</li>
+        <li><strong>清空已完成</strong>：加一个"清除已完成"按钮，把 done 为 true 的待办全删掉（提示：重新赋值 <code>todos = todos.filter(...)</code> 但要用 <code>let</code> 声明数组）</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+     // ========== 1. 数据：一个数组存所有待办 ==========
+    let todos = [];
+    let nextId = 1;
+
+    // ========== 2. 渲染：把数组"画"到页面上 ==========
+    function render() {
+      const list = document.getElementById("todo-list");
+      list.innerHTML = "";                          // 先清空旧的（第7课 innerHTML）
+      for (const todo of todos) {                   // 遍历数组（第4课）
+        const li = document.createElement("li");    // 第7课 createElement
+        // 创建按钮（跟创建 checkbox 一模一样的流程）
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "删除";
+        delBtn.className = "del";
+
+        // 关键：闭包——回调"记住"了当前这条 todo
+        delBtn.addEventListener("click", () => {
+          const i = todos.findIndex(t => t.id === todo.id); // 按下标：先找到它
+          todos.splice(i, 1);        // 选 splice：原地改数组、不重排引用；把 filter 留给任务 4
+          render();                  // 数据变了 → 重画
+        });
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = todo.done;               // 已完成就勾上
+        const span = document.createElement("span");
+        span.textContent = todo.text;
+        if (todo.done) {
+          span.style.textDecoration = "line-through"; // 完成 → 划线（第7课 style）
+          span.style.color = "#9ca3af";
+        }
+        // 切换完成：勾选/取消时改数据，然后重新画
+        checkbox.addEventListener("change", () => {
+          todo.done = checkbox.checked;
+          render();
+        });
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      }
+      updateStats();
+    }
+
+    // ========== 3. 添加：读取输入 → 塞进数组 → 重画 ==========
+    function addTodo() {
+      const input = document.getElementById("todo-input");
+      const text = input.value.trim();              // 去掉首尾空格
+      if (text === "") return;                      // 空的不加（第1课 falsy）
+      todos.push({ id: nextId++, text: text, done: false }); // 第4课 push
+      input.value = "";                             // 清空输入框，方便连输
+      render();
+    }
+    document.getElementById("add-btn").addEventListener("click", addTodo); // 第8课
+    document.getElementById("todo-input").addEventListener("keydown", (e) => {
+      if ( e.key === "Enter"){
+        addTodo();
+      }
+    })
+
+    const clearBtn = document.querySelector(".clear-btn");   // 单个元素 ✅
+    clearBtn.addEventListener("click", () => {
+      todos = todos.filter(t => !t.done);
+      render();
+    });
+
+    // ========== 4. 统计：render 时同步更新 ==========
+    function updateStats() {
+      const doneCount = todos.filter(t => t.done).length; 
+      const undoCount = todos.filter(t => !t.done).length;
+      document.getElementById("stats").textContent =
+        `共 ${todos.length} 条，已完成 ${doneCount} 条，未完成 ${undoCount} 条`;  
+    }
+
+    render(); // 初始画一次（空列表）
+  </script>
+</body>
+</html>
