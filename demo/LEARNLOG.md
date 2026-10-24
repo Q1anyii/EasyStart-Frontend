@@ -26,6 +26,7 @@
 | 2026.10.23 18:56 | 第8课 my-index08（事件） | addEventListener（click/input/keydown）、事件对象e（target/key/preventDefault）、mouseover布局抖动问题、==改=== | bnt拼错getElementById返回null、mouseover+show导致布局下移按钮难点、空格键分支第一遍漏写 | 45min | 4个改动任务全过（含把mouseover挪到clean解决交互冲突） |
 | 2026.10.23 19:56 | 第9课 my-index09（异步入门） | setTimeout、Promise三状态（pending/fulfilled/rejected）、.then/.catch、async/await+try/catch改写、fetch两步await（链式+await两种写法都实践） | p2的setTimeout参数错位（3000跑进resolve没生效）、resolve/pending拼写、状态名理解（resolve/reject是函数非状态） | 60min | 4个改动任务全过（fetch两种风格+按钮切换成功/失败） |
 | 2026.10.24 | 阶段二-1 待办清单（my-todo-list） | 数据驱动循环（数组→render→事件→改数据）、闭包捕获循环变量、findIndex+splice、filter删选（let重新赋值）、querySelector vs getElementsByClassName、CSS特异性（.add-row button压过.clear-btn）、flex对齐（margin-top破坏stretch） | 一开始对"整合"没思路，对着源码逐行敲；delBtn怎么知道删哪条（闭包）；getElementsByClassName返回集合没有addEventListener；按钮放.add-row里红色被更高特异性压住 | 70min | 4个改动任务全过（splice删除+选型注释、回车添加、未完成统计、filter清空已完成） |
+| 2026.10.24 | 阶段二-2 随机点名器（my-random-picker） | Math.random（[0,1)→×长度→floor取整→下标）、守卫子句（先挡空名单再return）、splice直接改原数组、let vs const（重置要重新赋值）、单双标签判断法（能不能包内容） | 空名单提示被覆盖——if只执行自己代码块、不拦后面代码，缺return导致names[0]=undefined又覆盖提示；==习惯性写成== | 40min | 4个改动任务全过（空名单守卫+return、加人、抽完移除splice+注释、重置名单） |
 
 ## 阶段进度
 
@@ -42,7 +43,7 @@
   - [x] 异步入门（setTimeout、Promise、async/await、fetch）
 - [ ] **阶段二 · 语法整合 demo**：
   - [x] 待办清单（数据驱动循环：数组→render→事件→改数据）
-  - [ ] 随机点名器
+  - [x] 随机点名器（Math.random、守卫子句）
   - [ ] 图片轮播
   - [ ] 简易计算器
 - [ ] **阶段三 · 小项目**：记账本（localStorage）/ 天气查询页（fetch）
