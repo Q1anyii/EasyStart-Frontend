@@ -25,11 +25,12 @@
 | 2026.10.23 18:09 | 第7课 my-index07（DOM操作） | 选中元素（getElementById/querySelector/querySelectorAll）、textContent vs innerHTML、style.xxx驼峰命名、createElement/appendChild/prepend、id自动挂window彩蛋 | 任务1第一遍漏打印现有文本和写彩蛋注释；appendChild"换位置"实验理解了元素只有"一个家" | 30min | 4个改动任务全过（含自创appendChild移动实验验证） |
 | 2026.10.23 18:56 | 第8课 my-index08（事件） | addEventListener（click/input/keydown）、事件对象e（target/key/preventDefault）、mouseover布局抖动问题、==改=== | bnt拼错getElementById返回null、mouseover+show导致布局下移按钮难点、空格键分支第一遍漏写 | 45min | 4个改动任务全过（含把mouseover挪到clean解决交互冲突） |
 | 2026.10.23 19:56 | 第9课 my-index09（异步入门） | setTimeout、Promise三状态（pending/fulfilled/rejected）、.then/.catch、async/await+try/catch改写、fetch两步await（链式+await两种写法都实践） | p2的setTimeout参数错位（3000跑进resolve没生效）、resolve/pending拼写、状态名理解（resolve/reject是函数非状态） | 60min | 4个改动任务全过（fetch两种风格+按钮切换成功/失败） |
+| 2026.10.24 | 阶段二-1 待办清单（my-todo-list） | 数据驱动循环（数组→render→事件→改数据）、闭包捕获循环变量、findIndex+splice、filter删选（let重新赋值）、querySelector vs getElementsByClassName、CSS特异性（.add-row button压过.clear-btn）、flex对齐（margin-top破坏stretch） | 一开始对"整合"没思路，对着源码逐行敲；delBtn怎么知道删哪条（闭包）；getElementsByClassName返回集合没有addEventListener；按钮放.add-row里红色被更高特异性压住 | 70min | 4个改动任务全过（splice删除+选型注释、回车添加、未完成统计、filter清空已完成） |
 
 ## 阶段进度
 
 - [x] **阶段0 · HTML/CSS 回顾**：`00-htmlcss-refresh/index.html`
-- [ ] **阶段一 · JS 语法**（每个点配 demo，做完勾选）：
+- [x] **阶段一 · JS 语法**（每个点配 demo，做完勾选）：
   - [x] 变量与数据类型（let/const、string/number/boolean、类型转换）
   - [x] 运算符与流程控制（if/switch、for/while）
   - [x] 函数与作用域（声明式/箭头函数、返回值、作用域）
@@ -39,6 +40,10 @@
   - [x] DOM 操作（选中元素、改内容/样式、创建元素）
   - [x] 事件（click/input/keydown、事件对象）
   - [x] 异步入门（setTimeout、Promise、async/await、fetch）
-- [ ] **阶段二 · 语法整合 demo**：待办清单 / 随机点名器 / 图片轮播 / 简易计算器
+- [ ] **阶段二 · 语法整合 demo**：
+  - [x] 待办清单（数据驱动循环：数组→render→事件→改数据）
+  - [ ] 随机点名器
+  - [ ] 图片轮播
+  - [ ] 简易计算器
 - [ ] **阶段三 · 小项目**：记账本（localStorage）/ 天气查询页（fetch）
 - [ ] **阶段四 · 复现项目**：chat-stream-lite
