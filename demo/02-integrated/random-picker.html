@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段二 · 整合 Demo 2/4：随机点名器</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 620px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .app { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; }
+    .row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .row input[type="text"] { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; outline: none; }
+    .row input[type="text"]:focus { border-color: #60a5fa; }
+    button { padding: 8px 16px; border-radius: 8px; border: 1px solid #cbd5e1; background: #2563eb; color: #fff; cursor: pointer; font-size: 14px; }
+    button:hover { background: #1d4ed8; }
+    #pick-btn { font-size: 16px; padding: 10px 24px; }
+    #result {
+      font-size: 40px; font-weight: 700; color: #b45309; text-align: center;
+      min-height: 64px; line-height: 64px; background: #fffbeb;
+      border: 1px solid #fde68a; border-radius: 10px; margin: 4px 0 16px;
+    }
+    .row label { font-size: 13px; color: #4b5563; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    #name-list { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    #name-list li { padding: 5px 12px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 13px; }
+    #stats { font-size: 13px; color: #6b7280; margin-top: 10px; }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段二 · 整合 Demo 2/4：随机点名器</h1>
+    <p class="sub">第二个整合 demo，比待办清单简单，找手感用。新知识点只有一个：<strong>Math.random()</strong>；其余全是复用——数组（存名单）、DOM（画名单/写结果）、事件（点按钮）、模板字符串（拼提示）。打开点点看。</p>
+
+    <div class="app">
+      <div id="result">？</div>
+      <div class="row">
+        <button id="pick-btn">点名</button>
+        <label><input type="checkbox" id="remove-mode"> 抽完移除</label>
+      </div>
+      <div class="row">
+        <input type="text" id="new-name" placeholder="新同学的名字">
+        <button id="add-btn">加人</button>
+        <button id="reset-btn">重置名单</button>
+      </div>
+      <ul id="name-list"></ul>
+      <p id="stats">名单共 0 人</p>
+    </div>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍（<code>my-random-picker.html</code>），最后做「改动任务」。注意：现在"抽完移除"把名单抽空后再点名，会显示 <code>undefined</code>——这是任务1要修的。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>空名单保护</strong>：名单空了还点"点名"，结果区要显示"名单已空，先加人！"（用 <code>names.length === 0</code> 判断，别让 undefined 漏出来）</li>
+        <li><strong>加人功能</strong>：输入名字点"加人"，<code>push</code> 进数组 + 重画名单 + 清空输入框（跟待办清单 addTodo 一个套路，但这次独立写）</li>
+        <li><strong>抽完移除模式</strong>：勾选"抽完移除"时，抽中的人从数组删掉并重画（<code>splice(i, 1)</code>，i 就是抽中的索引）；注释写一句：为什么这里用 splice 而不是 filter</li>
+        <li><strong>重置名单</strong>：点"重置名单"恢复初始 5 人（重新赋值 <code>names = [...]</code>）——想想为什么名单数组声明时必须用 <code>let</code> 而不是 <code>const</code></li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // ========== 1. 数据：名单数组 ==========
+    // 为什么用 let？——任务4"重置名单"要重新赋值 names = [...]
+    // const 数组能 push/splice（改的是数组内部），但不能指向新数组
+    let names = ["张三", "李四", "王五", "赵六", "孙七"];
+
+    // ========== 2. 渲染名单：数据驱动，跟待办清单同一个套路 ==========
+    function renderList() {
+      const list = document.getElementById("name-list");
+      list.innerHTML = "";                             // 先清空旧的
+      for (const name of names) {                      // 遍历数组（第4课）
+        const li = document.createElement("li");       // 第7课
+        li.textContent = name;
+        list.appendChild(li);
+      }
+      document.getElementById("stats").textContent = `名单共 ${names.length} 人`; // 模板字符串
+    }
+
+    // ========== 3. 点名：本课唯一的新知识 Math.random ==========
+    // Math.random() 返回 [0, 1) 的随机小数（含0、不含1，永远到不了1）
+    //  × names.length 后变成 [0, 5)
+    //  → Math.floor 向下取整 → 0 | 1 | 2 | 3 | 4 整数索引（floor 第1课数值方法）
+    function pick() {
+      const result = document.getElementById("result");
+      const i = Math.floor(Math.random() * names.length);  // 随机整数索引
+      const picked = names[i];                              // 数组按下标取值
+      result.textContent = picked;
+
+      // 抽完移除模式：勾选时删掉抽中的人
+      const removeMode = document.getElementById("remove-mode");
+      if (removeMode.checked) {
+        names.splice(i, 1);    // 从第 i 位删 1 个（阶段二-1 学过的 splice）
+        renderList();          // 名单变了 → 重画
+      }
+    }
+    document.getElementById("pick-btn").addEventListener("click", pick); // 第8课
+
+    renderList(); // 初始画一次
+  </script>
+</body>
+</html>
