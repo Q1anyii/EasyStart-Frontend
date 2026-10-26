@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段二 · 整合 Demo 4/4：简易计算器</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+    .wrap { max-width: 460px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .calc { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; }
+    #display {
+      background: #111827; color: #d1fae5; font-family: Consolas, monospace;
+      font-size: 34px; text-align: right; padding: 16px 18px; border-radius: 10px;
+      min-height: 70px; line-height: 1.1; word-break: break-all; margin-bottom: 14px;
+    }
+    #keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    #keys button {
+      padding: 14px 0; border-radius: 10px; border: 1px solid #e2e8f0;
+      background: #f8fafc; color: #1f2937; font-size: 20px; cursor: pointer;
+      font-family: inherit;
+    }
+    #keys button:hover { background: #e2e8f0; }
+    #keys button.op { background: #e0f2fe; color: #0369a1; }
+    #keys button.op:hover { background: #bae6fd; }
+    #keys button.fn { background: #fee2e2; color: #b91c1c; }
+    #keys button.fn:hover { background: #fecaca; }
+    #keys button.eq { background: #2563eb; color: #fff; }
+    #keys button.eq:hover { background: #1d4ed8; }
+    .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+    .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+    .tasks ol { margin-left: 18px; font-size: 14px; }
+    .tasks li { margin-bottom: 6px; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>阶段二 · 整合 Demo 4/4：简易计算器</h1>
+    <p class="sub">阶段二收官。新知识点：<strong>状态机</strong>（当前输入/运算符/上一个数三个状态互相转换）和<strong>事件委托</strong>（一个监听管所有按键）。没有"列表渲染"，全是状态切换——想想"按数字""按运算符""按等号"各该干什么。</p>
+
+    <div class="calc">
+      <div id="display">0</div>
+      <div id="keys">
+        <button class="fn" data-type="clear" data-key="C">C</button>
+        <button class="fn" data-type="back" data-key="⌫">⌫</button>
+        <button class="op" data-type="op" data-key="÷">÷</button>
+        <button class="op" data-type="op" data-key="×">×</button>
+        <button data-type="num" data-key="7">7</button>
+        <button data-type="num" data-key="8">8</button>
+        <button data-type="num" data-key="9">9</button>
+        <button class="op" data-type="op" data-key="-">-</button>
+        <button data-type="num" data-key="4">4</button>
+        <button data-type="num" data-key="5">5</button>
+        <button data-type="num" data-key="6">6</button>
+        <button class="op" data-type="op" data-key="+">+</button>
+        <button data-type="num" data-key="1">1</button>
+        <button data-type="num" data-key="2">2</button>
+        <button data-type="num" data-key="3">3</button>
+        <button class="eq" data-type="eq" data-key="=">=</button>
+        <button data-type="num" data-key="0">0</button>
+        <button data-type="num" data-key=".">.</button>
+      </div>
+    </div>
+
+    <h2>代码讲解</h2>
+    <p>讲解都写在下方 &lt;script&gt; 的注释里：先读注释，再新建副本亲手敲一遍（<code>my-calculator.html</code>），最后做「改动任务」。注意：现在 "." 和 "⌫" 两个键没功能——对应任务 2/3。</p>
+
+    <section class="tasks">
+      <h2>改动任务（做完才过关）</h2>
+      <ol>
+        <li><strong>除零保护</strong>：点 "÷" 再点 "0" 再点 "="，现在会显示 <code>Infinity</code>——改成显示"不能除以0"；注释写一句：为什么 Infinity 对用户没有意义</li>
+        <li><strong>小数点</strong>：给 "." 键接逻辑（追加进 current），但一个数里不能有两个小数点（用 <code>current.includes(".")</code> 守卫）；注释写一句：为什么小数用字符串拼而不是直接数字相加</li>
+        <li><strong>退格键 ⌫</strong>：删掉 current 最后一位（<code>current.slice(0, -1)</code>）；注释写一句：为什么用切片字符串而不是数字除法</li>
+        <li><strong>键盘支持</strong>：在 document 上监听 <code>keydown</code>，让键盘也能算——映射表：数字 0-9 → 数字键；<code>+ - / *</code> → 对应运算符（注意键盘 ÷ 是 "/"、× 是 "*"）；回车 → 等号；<code>c</code> → 清空</li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    let current = "";          // 为什么是字符串？见下方讲解
+    let previous = 0;
+    let operator = null;
+    let justDone = false;
+
+    const display = document.getElementById("display");
+    function updateDisplay() {
+      display.textContent = current === "" ? "0" : current;  // 空就显示 0
+    }
+
+    // ========== 2. 事件委托：一个监听管所有键 ==========
+    // 如果给 18 个按钮各绑监听要 18 行；事件委托：监听父容器，
+    // 点任何键都冒泡到 #keys，用 dataset.type 判断按的是哪种键
+
+    const keys = document.getElementById("keys");
+    keys.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");   // 点按钮里的文字，e.target 是文字——closest 找回按钮
+      if (!btn) return;
+      const type = btn.dataset.type;
+      if (type === "num") inputDigit(btn.dataset.key);
+      else if (type === "op") inputOperator(btn.dataset.key);
+      else if (type === "eq") calculate();
+      else if (type === "clear") clearAll();
+      else if (type === "back") backOne();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      const key = e.key;
+      if (key >= "0" && key <= "9") {          // 数字 0-9
+        inputDigit(key);
+      } else if (key === "+" || key === "-") {
+        inputOperator(key);                     // 键盘 +/- 和程序里的一样
+      } else if (key === "*") {
+        inputOperator("×");                     // 键盘 * → 程序 ×
+      } else if (key === "/") {
+        inputOperator("÷");                     // 键盘 / → 程序 ÷
+        e.preventDefault();                     // 挡住浏览器默认（/ 在 Firefox 是快速查找）
+      } else if (key === "Enter") {
+        calculate();
+      } else if (key === "c" || key === "C") {
+        clearAll();
+      }
+    });
+
+    // ========== 3. 数字输入：字符串拼接 ==========
+    // 为什么 current 是字符串：按"1"再按"2"，显示的是"12"不是 1+2=3
+    // 字符串"1"+"2"="12"天然正确；最后 Number(current) 一次转数值即可
+    function inputDigit(d) {
+      if (justDone) {           // 刚按过等号 → 重新开始输新数
+        current = "";
+        justDone = false;
+      }
+      if( current.includes(".") && d === ".") {
+        return  //小数点无法被识别为数字，因此需要字符串拼接后转为Number
+      }
+      current += d;             // 追加一位
+      updateDisplay();
+    }
+
+    // ========== 4. 运算符：把当前数存进 previous，准备下一个数 ==========
+    function inputOperator(op) {
+      if (current !== "") {     // 当前有数字才记（连续按运算符只是替换）
+        previous = Number(current);   // 字符串 → 数值
+        current = "";
+      }
+      operator = op;            // 连按两个运算符：直接换成新的
+    }
+
+    // ========== 5. 等号：真正算一次 ==========
+    function calculate() {
+      if (current === "" || operator === null) return;  // 守卫：缺数据不瞎算
+      const cur = Number(current);
+      let result;
+      if (operator === "+") result = previous + cur;
+      else if (operator === "-") result = previous - cur;
+      else if (operator === "×") result = previous * cur;
+      else if (operator === "÷") {
+        if (cur === 0){
+          result = "不能除以0" //Infinity是合法number但用户看不懂，面向用户要友好提示
+        }else {
+          result = previous / cur
+        }
+      };
+      current = String(result);
+      operator = null;
+      previous = 0;
+      justDone = true;          // 标记：下一次按数字要重开
+      updateDisplay();
+    }
+
+    // ========== 6. 清空 ==========
+    function clearAll() {
+      current = "";
+      previous = 0;
+      operator = null;
+      justDone = false;
+      updateDisplay();
+    }
+
+    function backOne() {
+      current = current.slice(0, -1); //数字除法涉及小数，并且current计算前是字符串
+      updateDisplay();
+    }
+
+
+  </script>
+</body>
+</html>
