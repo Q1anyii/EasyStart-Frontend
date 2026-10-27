@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶段三 · 小项目 1/2：记账本（localStorage）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+  .wrap { max-width: 480px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
+  .form-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+  input, select, button { padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: inherit; }
+  input { flex: 1; min-width: 100px; }
+  button { cursor: pointer; background: #2563eb; color: #fff; border: none; }
+  button:hover { background: #1d4ed8; }
+  .list { list-style: none; }
+  .list li { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  .amt { font-weight: 700; color: #b91c1c; }
+  .cat { font-size: 12px; background: #f1f5f9; border-radius: 6px; padding: 1px 8px; margin-right: 8px; }
+  .total { font-size: 15px; text-align: right; padding-top: 10px; color: #374151; }
+  .empty { color: #94a3b8; text-align: center; padding: 18px 0; font-size: 14px; }
+  .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+  .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+  .tasks ol { margin-left: 18px; font-size: 14px; }
+  .tasks li { margin-bottom: 6px; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>阶段三 · 小项目 1/2：记账本</h1>
+  <p class="sub">新主角：<strong>localStorage</strong>——把数据存进浏览器硬盘。之前待办清单刷新就丢，这次加几条记录、刷新页面、甚至关掉浏览器再打开，记录还在。</p>
+
+  <div class="card">
+    <div class="form-row">
+      <input type="number" id="amount" placeholder="金额（元）" step="0.01" min="0">
+      <select id="category">
+        <option>餐饮</option>
+        <option>交通</option>
+        <option>购物</option>
+        <option>其他</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <input type="text" id="note" placeholder="备注（可选）">
+      <button id="add-btn">记一笔</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <ul id="list" class="list"></ul>
+    <div id="total" class="total"></div>
+  </div>
+
+  <section class="tasks">
+    <h2>改动任务（做完才过关）</h2>
+    <ol>
+      <li><strong>删除单条</strong>：每条记录右边加"删"按钮，点了 splice 掉这一条，然后 <code>save()</code> + <code>render()</code>（注释写：为什么删完必须走这两步，只 splice 数组会怎样）</li>
+      <li><strong>合计总金额</strong>：用 reduce 把所有记录金额加起来，显示在 #total（注释写：reduce 累加 number 要注意什么——初始值和类型）</li>
+      <li><strong>类别筛选</strong>：加一个下拉"全部/餐饮/交通/购物/其他"，选了之后列表只显示对应类别（注释写：filter 出的数组怎么交给 render——直接 map 筛选结果）</li>
+      <li><strong>清空所有</strong>：加一个"清空"按钮，records 置空 + localStorage.removeItem("ledger") + render()（注释写：为什么光 records = [] 还不够，刷新会怎样）</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+// ========== 1. localStorage 三件套 ==========
+// localStorage.setItem("名字", "字符串")   → 存
+// localStorage.getItem("名字")             → 读（浏览器里没有就返回 null）
+// localStorage.removeItem("名字")          → 删
+// 关键：只能存字符串！对象/数组要先 JSON.stringify，读出来再 JSON.parse（第5课学过）
+
+const KEY = "ledger";
+
+// 启动时先读老数据：localStorage 里没有就给空数组
+function load() {
+  const raw = localStorage.getItem(KEY);
+  if (raw === null) return [];   // 第一次打开浏览器：空账本
+  return JSON.parse(raw);        // 有就还原成数组
+}
+
+// 每次数据变了就落盘：records → JSON.stringify → localStorage
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(records));
+}
+
+// 所有记录都放这：{ amount:15, category:"餐饮", note:"午饭" }
+let records = load();
+
+// ========== 2. render：数组 → 列表 DOM ==========
+// 阶段二-1 待办清单练过的：数据驱动循环
+const list = document.getElementById("list");
+
+function render() {
+  // 空账本显示提示
+  if (records.length === 0) {
+    list.innerHTML = '<li class="empty">还没有记录，记一笔吧</li>';
+    return;
+  }
+  // 每条记录一个 li
+  list.innerHTML = records.map(r => `
+    <li>
+      <span><span class="cat">${r.category}</span>${r.note || "无备注"}</span>
+      <span class="amt">¥${r.amount}</span>
+    </li>
+  `).join("");
+}
+
+// ========== 3. 添加：表单 → push 进数组 → save → render ==========
+const amountInput = document.getElementById("amount");
+const categorySel = document.getElementById("category");
+const noteInput = document.getElementById("note");
+const addBtn = document.getElementById("add-btn");
+
+addBtn.addEventListener("click", () => {
+  const amount = Number(amountInput.value);   // input 拿到的都是字符串，转 number
+  if (!amount || amount <= 0) return;         // 守卫：金额空或 0 不记
+  records.push({
+    amount: amount,
+    category: categorySel.value,
+    note: noteInput.value.trim()
+  });
+  save();          // ← localStorage 的灵魂：先落盘
+  render();        // ← 再刷视图
+  amountInput.value = "";    // 清空输入框准备下一笔
+  noteInput.value = "";
+});
+
+// 页面加载先 render 一次：把 localStorage 里存的老记录画出来
+render();
+</script>
+</body>
+</html>
