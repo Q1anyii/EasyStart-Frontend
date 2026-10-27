@@ -29,6 +29,7 @@
 | 2026.10.24 | 阶段二-2 随机点名器（my-random-picker） | Math.random（[0,1)→×长度→floor取整→下标）、守卫子句（先挡空名单再return）、splice直接改原数组、let vs const（重置要重新赋值）、单双标签判断法（能不能包内容） | 空名单提示被覆盖——if只执行自己代码块、不拦后面代码，缺return导致names[0]=undefined又覆盖提示；==习惯性写成== | 40min | 4个改动任务全过（空名单守卫+return、加人、抽完移除splice+注释、重置名单） |
 | 2026.10.24 | 阶段二-3 图片轮播（my-carousel） | setInterval循环定时器（vs setTimeout一次）、取模转圈（next用%length、prev加length回绕负索引）、数据驱动多视图渲染（卡片+圆点都随current重画）、动态颜色用inline vs固定样式用class、mouseenter/mouseleave、回调要传参必须包箭头函数 | prev注释第一遍漏写；直接传clearInterval导致砸不中定时器（事件对象被误当参数）；圆点全被涂色（循环里漏if条件）；inline样式残留压过class | 53min | 4个改动任务全过（上一张取模+注释、圆点动态色跳转、悬停暂停恢复、播放暂停按钮） |
 | 2026.10.26 | 阶段二-4 简易计算器（my-calculator） | 状态机（current/previous/operator/justDone 四变量转换）、事件委托（#keys一个监听+dataset.type分流）、字符串拼数（最后Number一次转）、keydown键盘映射（e.key、字符翻译 *→× /→÷、preventDefault） | 状态机比列表渲染抽象，隔两天才消化；Infinity对用户无意义需友好提示；键盘*和程序×不是同一字符要翻译映射 | 45min | 4个改动任务全过（除零保护、小数点includes守卫、退格slice(0,-1)、document keydown键盘映射） |
+| 2026.10.27 | 阶段三-1 记账本（my-ledger） | localStorage三件套（setItem/getItem/removeItem，只能存字符串→JSON.stringify）、load→改→save→render循环、数据源vs视图分离（filter挑着画不改records）、事件委托删动态元素（data-index）、reduce合计并入render自动同步 | getElementById找动态按钮返回null（要用事件委托+closest）；Number(对象)=NaN要Number(r.amount)；reduce累加器/当前元素顺序写反且漏初始值0；数字没有.value；select标签≠事件名要用change；map把对象映射成布尔值毁数据要用filter | 80min | 4个改动任务全过（事件委托删除、reduce合计、类别筛选filter、清空removeItem；代改：合计并入render随增删同步） |
 
 ## 阶段进度
 
@@ -48,5 +49,7 @@
   - [x] 随机点名器（Math.random、守卫子句）
   - [x] 图片轮播（setInterval、取模转圈、圆点指示器）
   - [x] 简易计算器
-- [ ] **阶段三 · 小项目**：记账本（localStorage）/ 天气查询页（fetch）
+- [ ] **阶段三 · 小项目**：
+  - [x] 记账本（localStorage 持久化）
+  - [ ] 天气查询页（fetch 真实 API）
 - [ ] **阶段四 · 复现项目**：chat-stream-lite
