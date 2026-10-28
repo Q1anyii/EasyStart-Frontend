@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶段三 · 小项目 2/2：天气查询页（fetch 真实 API）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: linear-gradient(160deg, #e0f2fe, #f0f9ff); color: #1f2937; line-height: 1.7; padding: 24px; min-height: 100vh; }
+  .wrap { max-width: 460px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+  .search-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  input { flex: 1; padding: 11px 14px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 15px; font-family: inherit; }
+  button { padding: 11px 18px; border: none; border-radius: 10px; background: #0284c7; color: #fff; font-size: 15px; cursor: pointer; font-family: inherit; }
+  button:hover { background: #0369a1; }
+  button:disabled { background: #94a3b8; cursor: not-allowed; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(2,132,199,.08); }
+  .city { font-size: 18px; color: #334155; margin-bottom: 8px; }
+  .temp { font-size: 52px; font-weight: 700; color: #0369a1; line-height: 1.1; }
+  .temp span { font-size: 22px; font-weight: 400; }
+  .desc { font-size: 16px; color: #475569; margin: 6px 0 14px; }
+  .meta { display: flex; gap: 16px; font-size: 14px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 12px; }
+  .err { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; border-radius: 10px; padding: 12px 14px; font-size: 14px; margin-top: 12px; }
+  .hint { color: #94a3b8; text-align: center; padding: 28px 0; font-size: 14px; }
+  .tasks { margin-top: 22px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+  .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+  .tasks ol { margin-left: 18px; font-size: 14px; }
+  .tasks li { margin-bottom: 6px; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>阶段三 · 小项目 2/2：天气查询页</h1>
+  <p class="sub">第一次真联网：fetch 打 Open-Meteo 公开 API（免费、免 key）。流程：输入城市名 → 地理编码拿经纬度 → 拿天气 → 渲染卡片。</p>
+
+  <div class="search-row">
+    <input type="text" id="city-input" placeholder="输入城市名，如：北京 / 上海 / 广州">
+    <button id="search-btn">查询</button>
+  </div>
+
+  <div id="result">
+    <div class="hint">输入城市名开始查询</div>
+  </div>
+
+  <section class="tasks">
+    <h2>改动任务（做完才过关）</h2>
+    <ol>
+      <li><strong>城市不存在的错误提示</strong>：输入一个不存在的城市（如"火星"），现在会怎样？geocoding 返回 <code>results: []</code>，要在 render 之前 <code>throw new Error("没找到这个城市")</code>，并在 catch 里显示红色错误卡片（注释写：为什么 fetch 成功但业务失败也要走 catch）</li>
+      <li><strong>加一个字段</strong>：在卡片 meta 区加"湿度"——URL 的 current 参数加上 <code>relative_humidity_2m</code>，render 时显示（注释写：这个字段要从 wData.current 的哪个 key 拿）</li>
+      <li><strong>回车也能查询</strong>：输入框上监听 <code>keydown</code>，<code>key === "Enter"</code> 时触发和按钮一样的查询逻辑（注释写：为什么把查询逻辑抽成独立函数 <code>doSearch()</code> 比复制一遍好）</li>
+      <li><strong>加载状态</strong>：fetch 有网络延迟（几百 ms 到几秒），查询期间按钮要 <code>disabled</code> + 文案变"加载中..."，回来后恢复（注释写：为什么要 finally 里恢复按钮，而不是成功/失败各写一遍）</li>
+    </ol>
+  </section>
+</div>
+<script>
+    const GEO_URL = "https://geocoding-api.open-meteo.com/v1/search";
+    const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
+    const searchRow = document.getElementById("search-row");
+
+    const CODE_MAP = {
+    0: "晴", 1: "晴", 2: "多云", 3: "阴",
+    45: "雾", 48: "雾凇",
+    51: "毛毛雨", 53: "毛毛雨", 55: "毛毛雨",
+    61: "小雨", 63: "中雨", 65: "大雨",
+    71: "小雪", 73: "中雪", 75: "大雪",
+    80: "阵雨", 81: "阵雨", 82: "暴雨",
+    95: "雷阵雨", 99: "雷阵雨"
+    };
+
+    const cityInput = document.getElementById("city-input");
+    const searchBtn = document.getElementById("search-btn");
+    const resultBox = document.getElementById("result");
+
+    searchBtn.addEventListener("click", async () => {
+        await fetchWeather();
+    });
+
+    cityInput.addEventListener("keydown", async (e) => {
+        if (e.key === "Enter") await fetchWeather();
+    })
+
+    //方法复用，防止重复编码冗余
+    async function fetchWeather() {
+
+        const city = cityInput.value.trim();
+        if (!city) return;
+        searchBtn.disabled = true;
+        searchBtn.textContent = "加载中...";
+        try {
+            resultBox.innerHTML = `<div class="card">正在查询天气...</div>`;
+
+            // 第一步：城市名 → 经纬度
+            // encodeURIComponent：把中文/空格编码成 URL 安全格式（"北京" → "%E5%8C%97%E4%BA%AC"）
+            const geoRes = await fetch(`${GEO_URL}?name=${encodeURIComponent(city)}&count=1&language=zh`);
+            const geoData = await geoRes.json();
+
+            // 守卫：API 返回成功但 results 是空数组（城市不存在）
+            if (!geoData.results || geoData.length === 0) {
+            throw new Error("没找到这个城市：" + city); //防止报错直接回显前端
+            }
+            const { latitude, longitude, name } = geoData.results[0];
+
+            // 第二步：经纬度 → 天气
+            const wRes = await fetch(`${WEATHER_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`);
+            const wData = await wRes.json();
+
+            // 渲染卡片
+            renderCard(name, geoData.results[0].admin1, wData.current);
+        } catch (err) {
+            //如果不catch，前端不会显示错误信息，错误只会在控制台输出
+            resultBox.innerHTML = `<div class="err">查询失败：${err.message}</div>`; 
+        } finally { //finally必执行，不用专门两次写
+            searchBtn.disabled = false;
+            searchBtn.textContent = "查询";
+        }
+    }
+    
+    function renderCard(cityName, admin, cur) {
+        const desc = CODE_MAP[cur.weather_code] || "未知";
+        resultBox.innerHTML = `
+            <div class="card">
+            <div class="city">${cityName}, <span>${admin}</span></div>
+            <div class="temp">${cur.temperature_2m}<span>°C</span></div>
+            <div class="desc">${desc}</div>
+            <div class="meta">
+                <span>风速 ${cur.wind_speed_10m} km/h</span>
+                <span>湿度 ${cur.relative_humidity_2m} %</span>
+            </div>
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
