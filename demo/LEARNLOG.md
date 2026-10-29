@@ -31,6 +31,7 @@
 | 2026.10.26 | 阶段二-4 简易计算器（my-calculator） | 状态机（current/previous/operator/justDone 四变量转换）、事件委托（#keys一个监听+dataset.type分流）、字符串拼数（最后Number一次转）、keydown键盘映射（e.key、字符翻译 *→× /→÷、preventDefault） | 状态机比列表渲染抽象，隔两天才消化；Infinity对用户无意义需友好提示；键盘*和程序×不是同一字符要翻译映射 | 45min | 4个改动任务全过（除零保护、小数点includes守卫、退格slice(0,-1)、document keydown键盘映射） |
 | 2026.10.27 | 阶段三-1 记账本（my-ledger） | localStorage三件套（setItem/getItem/removeItem，只能存字符串→JSON.stringify）、load→改→save→render循环、数据源vs视图分离（filter挑着画不改records）、事件委托删动态元素（data-index）、reduce合计并入render自动同步 | getElementById找动态按钮返回null（要用事件委托+closest）；Number(对象)=NaN要Number(r.amount)；reduce累加器/当前元素顺序写反且漏初始值0；数字没有.value；select标签≠事件名要用change；map把对象映射成布尔值毁数据要用filter | 80min | 4个改动任务全过（事件委托删除、reduce合计、类别筛选filter、清空removeItem；代改：合计并入render随增删同步） |
 | 2026.10.28 | 阶段三-2 天气查询页（my-weather） | fetch两步串联（地理编码拿经纬度→拿天气）、encodeURIComponent中文编码、try/catch兜三类错误（网络/HTTP/业务throw）、finally恢复按钮、抽函数复用（按钮+回车共用fetchWeather）、API返回数字编码前端映射中文（CODE_MAP） | e.target和e.key搞混（target是元素，key才是按键）；fetchWeather函数不存在要先抽函数；style.display="disabled"非法值（disabled是按钮属性不是CSS） | 40min | 4个改动任务全过（城市不存在throw红卡片、湿度字段、回车查询抽函数复用、disabled加载状态finally恢复） |
+| 2026.10.29 | 阶段四-上 chat-stream-lite（my-chat-stream） | 消息数组数据驱动渲染（{role,text}对象）、气泡按role分class（user右/ai左）、抽send()函数按钮+回车复用、随机AI回复（数组+Math.random+floor）、空消息守卫trim、发送后focus聚焦输入框 | 无卡点（零件全熟，20min一气呵成） | 20min | 4个改动任务全过（Enter发送抽函数、随机回复数组、空消息守卫、清空+focus） |
 
 ## 阶段进度
 
