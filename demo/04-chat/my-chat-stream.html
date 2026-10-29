@@ -16,6 +16,10 @@
   .msg { max-width: 75%; padding: 9px 13px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
   .msg.user { align-self: flex-end; background: #2563eb; color: #fff; border-bottom-right-radius: 4px; }
   .msg.ai { align-self: flex-start; background: #f1f5f9; color: #1f2937; border-bottom-left-radius: 4px; }
+  .chat-header { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+  .chat-header span { font-size: 15px; font-weight: 600; }
+  .chat-header button { font-size: 12px; padding: 5px 10px; border: 1px solid #e5e7eb; background: #fff; border-radius: 6px; cursor: pointer; color: #6b7280; }
+  .chat-header button:hover { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
   .input-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #f1f5f9; }
   .input-row input { flex: 1; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 20px; font-size: 14px; font-family: inherit; outline: none; }
   .input-row input:focus { border-color: #2563eb; }
@@ -34,6 +38,10 @@
   <p class="sub">阶段四复现项目：一个最简聊天界面。今天做：发消息 → 渲染气泡 → 模拟 AI 回复。明天做：localStorage 存历史 + 自动滚动 + "正在输入"状态。</p>
 
   <div class="chat">
+    <div class="chat-header">
+      <span>💬 Chat Stream</span>
+      <button id="clear-btn">清空对话</button>
+    </div>
     <div class="messages" id="messages"></div>
     <div class="input-row">
       <input type="text" id="input" placeholder="输入消息...">
@@ -42,20 +50,41 @@
   </div>
 
   <section class="tasks">
-    <h2>改动任务（做完才过关）</h2>
+    <h2>上半改动任务（做完才过关）</h2>
     <ol>
       <li><strong>按 Enter 发送</strong>：input 上监听 <code>keydown</code>，<code>key === "Enter"</code> 时触发和按钮一样的发送（注释写：为什么把发送逻辑抽成 <code>send()</code> 函数而不是复制一遍）</li>
       <li><strong>AI 回复改成随机</strong>：现在 AI 永远回同一句，改成从几句预设回复里随机挑一句（数组 + <code>Math.random()</code> + <code>Math.floor()</code>，衔接点名器）</li>
       <li><strong>空消息守卫</strong>：输入框空或全空格时点发送不做任何事（<code>trim()</code> 判断）</li>
       <li><strong>发送后清空并聚焦</strong>：发送后 <code>input.value = ""</code> 并 <code>input.focus()</code>，方便连续输入（注释写：为什么 focus 是体验细节不是功能）</li>
     </ol>
+    <br>
+    <h2>下半改动任务（在你自己的 my-chat-stream.html 上加）</h2>
+    <ol>
+      <li><strong>localStorage 持久化</strong>：messages 改动后 <code>save()</code> 存 localStorage（JSON.stringify），页面加载时 <code>load()</code> 读出来（衔接记账本的 load/save 循环）</li>
+      <li><strong>自动滚动到底部</strong>：每次 render 后 <code>messagesBox.scrollTop = messagesBox.scrollHeight</code>（注释写：为什么新消息要滚到底而不是停在上面）</li>
+      <li><strong>"正在输入"状态</strong>：AI 回复延迟期间，先在列表里插一个 <code>{ role: "ai", text: "正在输入..." }</code> 的气泡，AI 真正回复来了后把这个占位气泡替换掉（注释写：为什么要先显示"正在输入"而不是干等 800ms）</li>
+      <li><strong>清空对话按钮</strong>：头部加一个"清空对话"按钮，点击后 messages 清空 + localStorage.removeItem + render（注释写：为什么清空也要走 save/render 循环）</li>
+    </ol>
   </section>
 </div>
 <script>
-    let messages = [];
+    const KEY = "chat-messages";
+    
+    function save() {
+        localStorage.setItem(KEY, JSON.stringify(messages))
+    }
+
+    function load() {
+        const raw = localStorage.getItem(KEY);
+        return raw ? JSON.parse(raw) : [];
+    }
+
+    let messages = load();
+
     const sendBtn = document.getElementById("send-btn");
     const input = document.getElementById("input");
     const messagesBox = document.getElementById("messages");
+    const clearBtn = document.getElementById("clear-btn");
 
     const resp = ["你好，我是101", "Hello, nice to meet u", "HaHaHa", "How it going today?"]
 
@@ -63,6 +92,7 @@
         messagesBox.innerHTML = messages.map(m => `
         <div class="msg ${m.role}">${m.text}</div>
         `).join("");
+        messagesBox.scrollTop = messagesBox.scrollHeight; //提升用户体验,让会话窗口始终显示最新内容
     }
 
     function send() { // 重复函数抽取，降低代码冗余
@@ -72,11 +102,33 @@
         messages.push({ role: "user", text: text });
         render();
 
+        messages.push({ role: "ai", text: "正在输入..." }); //优化反馈
+        render();
+
         setTimeout(() => {
             const i = Math.floor(Math.random() * resp.length)
-            messages.push({ role: "ai", text: resp[i]});
+            messages.pop();
+            const reply = resp[i];
+            messages.push({ role: "ai", text: ""});
             render();
-        }, 800);
+
+            sendBtn.disabled = true;
+
+            let charIdx = 0;
+
+            // setInrerval()，轮播，图片轮播demo使用过
+            const timer = setInterval(() => {
+                charIdx ++;
+                messages[messages.length - 1].text = reply.slice(0, charIdx);
+                messagesBox.lastElementChild.textContent = messages[messages.length - 1].text;
+
+                if (charIdx >= reply.length) {
+                    clearInterval(timer);
+                    sendBtn.disabled = false;
+                    save();
+                }
+            }, 50)
+        }, 300);
 
       input.value = "";
       input.focus(); //重新聚焦到输入框，这样不用专门点击，优化用户体验
@@ -89,6 +141,14 @@
     sendBtn.addEventListener("click", () => {
         send();
     });
+
+    clearBtn.addEventListener("click", () => {
+        messages = [];
+        //清空本地localStorage，防止刷新后数据还存在, 
+        //需要传key，不能直接clear，否则其他KEY的缓存也会被删除
+        localStorage.removeItem(KEY);
+        render(); 
+    })
 
     // 初始渲染（空数组时显示空列表）
     render();
