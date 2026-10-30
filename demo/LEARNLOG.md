@@ -33,6 +33,7 @@
 | 2026.10.28 | 阶段三-2 天气查询页（my-weather） | fetch两步串联（地理编码拿经纬度→拿天气）、encodeURIComponent中文编码、try/catch兜三类错误（网络/HTTP/业务throw）、finally恢复按钮、抽函数复用（按钮+回车共用fetchWeather）、API返回数字编码前端映射中文（CODE_MAP） | e.target和e.key搞混（target是元素，key才是按键）；fetchWeather函数不存在要先抽函数；style.display="disabled"非法值（disabled是按钮属性不是CSS） | 40min | 4个改动任务全过（城市不存在throw红卡片、湿度字段、回车查询抽函数复用、disabled加载状态finally恢复） |
 | 2026.10.29 | 阶段四-上 chat-stream-lite（my-chat-stream） | 消息数组数据驱动渲染（{role,text}对象）、气泡按role分class（user右/ai左）、抽send()函数按钮+回车复用、随机AI回复（数组+Math.random+floor）、空消息守卫trim、发送后focus聚焦输入框 | 无卡点（零件全熟，20min一气呵成） | 20min | 4个改动任务全过（Enter发送抽函数、随机回复数组、空消息守卫、清空+focus） |
 | 2026.10.29 | 阶段四-下 chat-stream增强（my-chat-stream续） | localStorage存聊天历史（load/save循环）、自动滚动（scrollTop=scrollHeight）、正在输入占位气泡（pop替换真回复）、清空对话（removeItem）、模拟流式打字（setInterval逐字slice截取+局部更新textContent） | innerHTML空白文本节点导致lastChild取到文本节点而非气泡div（要用lastElementChild）；流式期间不重建整个列表只改最后气泡textContent | 15min | 4个增强任务全过（localStorage历史、自动滚动、正在输入状态、清空对话；加练：setInterval流式打字效果） |
+| 2026.10.30 | 阶段五 TS速成（my-ts-intro） | TS=JS+类型标注（变量/函数/接口/联合类型/可选字段）、interface≈Java class、编译时类型检查、联合类型vs方法重载（重载=同名函数不同参数；联合=一个位置可接受多类型） | 浏览器实时编译方案体验差（VS Code红波浪线不影响运行）；phone误写成数字（接口标注string要类型对齐） | 40min | 4个改动任务全过（Todo接口数组、calculate函数类型、formatId联合类型、User可选phone字段） |
 
 ## 阶段进度
 
@@ -56,3 +57,5 @@
   - [x] 记账本（localStorage 持久化）
   - [x] 天气查询页（fetch 真实 API）
 - [x] **阶段四 · 复现项目**：chat-stream-lite
+- [x] **阶段五 · TS 速成**：类型标注/interface/联合类型/可选字段
+- [ ] **阶段六 · 框架**：React（下周开始）

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶段五 · TS 速成（浏览器实时编译）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+  .panel { background: #1e293b; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+  .panel-title { color: #94a3b8; font-size: 12px; margin-bottom: 10px; font-family: Consolas, monospace; }
+  pre { color: #e2e8f0; font-family: Consolas, monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+  .out { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; min-height: 60px; font-size: 14px; }
+  .out div { margin-bottom: 4px; }
+  .tasks { margin-top: 18px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+  .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+  .tasks ol { margin-left: 18px; font-size: 14px; }
+  .tasks li { margin-bottom: 6px; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  .hl { color: #fbbf24; }
+  .kw { color: #c084fc; }
+  .cm { color: #64748b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>TypeScript 速成</h1>
+  <p class="sub">TS = JS + 类型标注。你有 Java 基础，核心概念就是"把 Java 的类型系统搬过来"。左边是 TS 代码，右边是运行结果。</p>
+
+  <div class="panel">
+    <div class="panel-title">▼ TypeScript 代码（改这里，下面实时运行）</div>
+    <pre id="ts-source">
+        interface Todo{ // interface 和 class都是用于声明一个对象并声明属性
+            id: number,
+            text: string,
+            done: boolean
+        }
+        const todos: Todo[] = [
+             { id: 1, text: "学TS", done: false }
+        ];
+        todos.map(t => {
+            console.log(t.id);
+            console.log(t.text);
+            console.log(t.done);
+        })
+        function calculate(a: number, b: number, op: string): number { //如果传入类型不匹配会报错
+            if (op === "+") return a + b;
+            else if (op === "-") return a - b;
+        }
+        console.log(calculate(1, 2, "+"));
+        function formatId(id: number | string): number | string {
+            // 联合类型 vs 方法重载：重载是多个同名函数不同参数列表；联合类型是一个位置可以接受多种类型，函数体内部要自己判断分支
+            if (!isNaN(id)) {
+                id = "#" + id;
+            } else {
+                id = id.toUpperCase();
+            }
+            return id;
+        }
+        console.log(formatId(12))
+        interface User {
+            name: string;//必须在对象创建时显式传入
+            age: number;
+            phone?: string;  // ? = 可选字段,如果没有传入不影响对象正常创建
+        }
+        const u1: User = { name: "QQ", age: 20, phone: "1232131"};
+        const u2: User = { name: "AA", age: 19};
+        function greet(user: User): string {
+            return `你好，${user.name}，今年${user.age}岁，号码${user.phone}`;
+        };
+        console.log(greet(u1));
+        console.log(greet(u2));
+</div>
+
+  <div class="out" id="output">（运行结果）</div>
+
+  <section class="tasks">
+    <h2>改动任务</h2>
+    <ol>
+      <li><strong>定义一个 Todo 接口</strong>：<code>{ id: number, text: string, done: boolean }</code>，然后创建一个 Todo 数组并 map 输出（注释写：interface 和 Java 的 class 有什么相似处）</li>
+      <li><strong>函数加类型</strong>：写一个 <code>calculate(a: number, b: number, op: string): number</code>，op 是 "+"/"-"，返回计算结果（注释写：TS 在编译时就会检查你传的类型对不对）</li>
+      <li><strong>联合类型实战</strong>：写一个 <code>formatId(id: number | string)</code>，number 时前面加 "#"，string 时转大写（注释写：联合类型和 Java 的方法重载有什么区别）</li>
+      <li><strong>可选字段</strong>：给 User 接口加一个可选的 <code>phone?: string</code>，创建两个 User（一个有 phone 一个没有），都能正常调用 greet（注释写：? 可选字段和必填字段的区别）</li>
+    </ol>
+  </section>
+</div>
+
+<script src="https://unpkg.com/typescript@5.3.3/lib/typescript.js"></script>
+<script>
+    // 读取 <pre id="ts-source"> 里的 TS 代码，实时编译成 JS 并执行
+const tsCode = document.getElementById("ts-source").textContent;
+try {
+  const jsCode = ts.transpileModule(tsCode, {
+    compilerOptions: { target: ts.ScriptTarget.ES2015 }
+  }).outputText;
+  // 重写 console.log，输出到页面上
+  const output = document.getElementById("output");
+  console.log = (...args) => {
+    const div = document.createElement("div");
+    div.textContent = args.join(" ");
+    output.appendChild(div);
+  };
+  eval(jsCode);
+} catch (err) {
+  document.getElementById("output").innerHTML =
+    '<div style="color:#b91c1c">编译错误：' + err.message + "</div>";
+}
+
+</script>
+</body>
+</html>
