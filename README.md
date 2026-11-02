@@ -12,31 +12,34 @@
 - **打卡复盘**：每课完成在 `demo/LEARNLOG.md` 打卡（日期 / 知识点 / 卡点 / 用时 / 改动题）
 - **自述总结**：学完用自己的话完整复述一遍，卡壳就看文档，能说出来才算过
 
-## 路线（5 阶段）
+## 路线（7 阶段）
 
 | 阶段 | 目录 | 内容 | 状态 |
 | --- | --- | --- | --- |
-| 阶段0 · HTML/CSS 回顾（可选） | `demo/00-htmlcss-refresh` | H5 语义标签、盒模型、Flex、CSS3 | 已完成 |
-| 阶段一 · JS 语法 | `demo/01-syntax` | 变量/类型、运算符/流程控制、函数/作用域、数组、对象、字符串 ES6、DOM、事件、异步 | 进行中（第1、2课完成，第3课待练习） |
-| 阶段二 · 语法整合 demo | `demo/02-integrated` | 待办清单 / 随机点名器 / 图片轮播 / 简易计算器 | 未开始 |
-| 阶段三 · 小项目 | `demo/03-projects` | 记账本（localStorage）/ 天气查询页（fetch） | 未开始 |
-| 阶段四 · 复现项目 | `chat-stream-lite/` | TS + Vue3 对话流式渲染（SSE / ReadableStream 手搓） | 未开始 |
+| 阶段0 · HTML/CSS 回顾 | `demo/00-htmlcss-refresh` | H5 语义标签、盒模型、Flex、CSS3 | ✅ 已完成 |
+| 阶段一 · JS 语法 | `demo/01-syntax` | 变量/类型、运算符/流程控制、函数/作用域、数组、对象、字符串 ES6、DOM、事件、异步（9 课） | ✅ 已完成 |
+| 阶段二 · 语法整合 demo | `demo/02-integrated` | 待办清单 / 随机点名器 / 图片轮播 / 简易计算器 | ✅ 已完成 |
+| 阶段三 · 小项目 | `demo/03-projects` | 记账本（localStorage）/ 天气查询页（fetch 真实 API） | ✅ 已完成 |
+| 阶段四 · 复现项目 | `demo/04-reproduce` | chat-stream-lite（消息渲染 + localStorage 历史 + 流式打字） | ✅ 已完成 |
+| 阶段五 · TS 速成 | `demo/05-typescript` | 类型标注 / interface / 联合类型 / 可选字段（浏览器实时编译） | ✅ 已完成 |
+| 阶段六 · React 框架 | `demo/06-react` | JSX → 组件/props → state/事件 → 列表/条件渲染 → 表单 → useEffect → Vite 工程化 → 实战重构 | 🚧 进行中 |
 
 ## 仓库结构
 
 ```
 前端学习/
 ├── README.md               # 本文件
-├── 前端学习路线.md          # 旧版路线（TS→Vue3→chat-stream-lite），保留作阶段四复现目标与面试话术参考
+├── 前端学习路线.md          # 旧版路线（TS→Vue3→chat-stream-lite），已被 React 路线取代，仅存档
 ├── demo/                   # 学习主目录
 │   ├── README.md           # demo 目录说明
 │   ├── LEARNLOG.md         # 打卡日志（每课一行：日期/知识点/卡点/用时/改动题）
 │   ├── 00-htmlcss-refresh/ # 阶段0
 │   ├── 01-syntax/          # 阶段一（官方 demo + 自己的 my-index 练习副本）
-│   ├── 02-integrated/      # 阶段二
-│   ├── 03-projects/        # 阶段三
-│   └── 04-reproduce/       # 阶段四
-└── chat-stream-lite/       # 复现目标项目（阶段四）
+│   ├── 02-integrated/      # 阶段二（待办/点名器/轮播/计算器）
+│   ├── 03-projects/        # 阶段三（记账本/天气页）
+│   ├── 04-reproduce/       # 阶段四（chat-stream-lite）
+│   ├── 05-typescript/      # 阶段五（TS 速成）
+│   └── 06-react/           # 阶段六（React 框架）
 ```
 
 ## 每课学习流程（固定模板）
@@ -53,12 +56,16 @@
 - 一课/一阶段一个完成节点 = 一次提交；提交前先审查改动任务是否完成、打卡是否补齐
 - 只提交与本次学习相关的文件，不 sweep 无关改动
 
-## 当前进度（2026-10-21）
+## 当前进度（2026-11-02）
 
-- 阶段0：已完成（4 个改动任务全过）
-- 阶段一：
-  - [x] 第1课 变量与数据类型（`my-index01`，任务1~8 + Set 彩蛋）
-  - [x] 第2课 运算符与流程控制（`my-index02`，3 个待修任务全过）
-  - [ ] 第3课 函数与作用域（`03-functions-scope.html` 已发，待练习）
-  - [ ] 第4~9课 待发（数组 / 对象 / 字符串ES6 / DOM / 事件 / 异步）
-- 详细打卡见 `demo/LEARNLOG.md`
+- 阶段0~5 全部完成（详细打卡见 `demo/LEARNLOG.md`）
+- **阶段六 · React 框架**：今日开课（JSX 与组件）
+  - [ ] 第1课 JSX 与组件（组件化思想、className、{}插值、props）
+  - [ ] 第2课 props 与组件通信
+  - [ ] 第3课 state 与事件处理
+  - [ ] 第4课 条件渲染与列表渲染
+  - [ ] 第5课 表单与受控组件
+  - [ ] 第6课 useEffect 与副作用
+  - [ ] 第7课 工程化：Vite + TS 项目
+  - [ ] 第8课 组件化实战：重构记账本
+  - [ ] 第9课 路由 + 完整项目（AI 应用前端雏形）
