@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶段六 · React 第1课：JSX 与组件</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+  .wrap { max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+  .app { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px; }
+  .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; }
+  .card h3 { font-size: 15px; margin-bottom: 4px; }
+  .card p { font-size: 13px; color: #64748b; }
+  .tasks { margin-top: 18px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+  .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+  .tasks ol { margin-left: 18px; font-size: 14px; }
+  .tasks li { margin-bottom: 6px; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>React 第1课：JSX 与组件</h1>
+  <p class="sub">阶段六开课。React 的核心思想：<strong>组件化</strong>——把页面拆成一个一个小零件，每个零件是一个"返回 HTML 的函数"。今天学 JSX 和 props。</p>
+
+  <!-- 下面这个 root 是 React 的挂载点：React 会把组件渲染进这个空 div -->
+  <div id="root" class="app"></div>
+
+  <section class="tasks">
+    <h2>改动任务（做完才过关）</h2>
+    <ol>
+      <li><strong>新建一个组件</strong>：写一个 <code>Footer</code> 函数组件，返回一个 <code>&lt;p&gt;</code> 显示"© 2026 前端学习"，加进 App 里（注释写：为什么组件名要大写开头，小写会怎样）</li>
+      <li><strong>props 传参</strong>：给 <code>Welcome</code> 组件加一个 <code>city</code> prop（如 city="南昌"），欢迎语改成"你好，南昌！"（注释写：props 和 JS 函数参数有什么相似处）</li>
+      <li><strong>列表渲染</strong>：把 skills 数组用 <code>skills.map(...)</code> 渲染成一组 <code>&lt;li&gt;</code>，放进一个 <code>&lt;ul&gt;</code>（注释写：为什么 React 要求 map 出来的每个元素有唯一的 <code>key</code>）</li>
+      <li><strong>三元条件渲染</strong>：给 TodoItem 加一个 <code>done</code> prop，done 为 true 时文字加删除线 <code>text-decoration: line-through</code>（注释写：三元表达式和 if/else 在 JSX 里的区别）</li>
+    </ol>
+  </section>
+</div>
+
+<!-- React 和 Babel 用 CDN 引入：React 提供组件能力，Babel 把 JSX 编译成浏览器能跑的 JS -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- type="text/babel"：这段代码是 JSX，由 Babel 实时编译 -->
+<script type="text/babel">
+// ========== 1. 什么是组件 ==========
+// 组件 = 一个函数，返回 JSX（长得像 HTML 的 JS）
+// 大写开头（Welcome）是硬规则：React 靠大小写区分"组件"和"普通标签"
+function Welcome(props) {
+  return <h2>你好，{props.name}！</h2>;   // props 是传入的"参数对象"，{} 里写 JS 表达式
+}
+
+// ========== 2. JSX 的三个坑（和 HTML 不一样的地方） ==========
+// ① class → className（因为 class 在 JS 里是保留字）
+// ② 内容用 {} 插值，不是 {{}}
+// ③ 事件驼峰：onClick 而不是 onclick
+function Card() {
+  return (
+    <div className="card">
+      <h3>React 三大件</h3>
+      <p>JSX（写结构） / 组件（拆零件） / state（管状态）</p>
+    </div>
+  );
+}
+
+// ========== 3. 组件组合：App 把其他组件装进来 ==========
+// 组件像乐高积木：App 是"总装车间"，Welcome/Card 是零件
+function App() {
+  return (
+    <div>
+      <Welcome name="郭同学" />
+      <Card />
+    </div>
+  );
+}
+
+// ========== 4. 挂载：把 App 渲染进 #root ==========
+// createRoot 拿到挂载点，render 把组件画进去
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
