@@ -34,6 +34,7 @@
 | 2026.10.29 | 阶段四-上 chat-stream-lite（my-chat-stream） | 消息数组数据驱动渲染（{role,text}对象）、气泡按role分class（user右/ai左）、抽send()函数按钮+回车复用、随机AI回复（数组+Math.random+floor）、空消息守卫trim、发送后focus聚焦输入框 | 无卡点（零件全熟，20min一气呵成） | 20min | 4个改动任务全过（Enter发送抽函数、随机回复数组、空消息守卫、清空+focus） |
 | 2026.10.29 | 阶段四-下 chat-stream增强（my-chat-stream续） | localStorage存聊天历史（load/save循环）、自动滚动（scrollTop=scrollHeight）、正在输入占位气泡（pop替换真回复）、清空对话（removeItem）、模拟流式打字（setInterval逐字slice截取+局部更新textContent） | innerHTML空白文本节点导致lastChild取到文本节点而非气泡div（要用lastElementChild）；流式期间不重建整个列表只改最后气泡textContent | 15min | 4个增强任务全过（localStorage历史、自动滚动、正在输入状态、清空对话；加练：setInterval流式打字效果） |
 | 2026.10.30 | 阶段五 TS速成（my-ts-intro） | TS=JS+类型标注（变量/函数/接口/联合类型/可选字段）、interface≈Java class、编译时类型检查、联合类型vs方法重载（重载=同名函数不同参数；联合=一个位置可接受多类型） | 浏览器实时编译方案体验差（VS Code红波浪线不影响运行）；phone误写成数字（接口标注string要类型对齐） | 40min | 4个改动任务全过（Todo接口数组、calculate函数类型、formatId联合类型、User可选phone字段） |
+| 2026.11.02 | 阶段六第1课 JSX与组件（my-react-intro） | 组件=返回JSX的函数（大写开头）、JSX三坑（class→className/{}插值/事件驼峰）、props传参≈函数参数、列表渲染map+key、三元条件渲染、React声明式（render/DOM操作被框架封装） | appendChild(字符串)报错（组件里禁止手动DOM操作，只写JSX）；Welcom拼错ReferenceError；done="true"引号传字符串非布尔（truthy陷阱，"False"也触发删除线） | 30min | 4个改动任务全过（Footer组件、city props、skills列表map+key、TodoItem三元条件渲染） |
 
 ## 阶段进度
 
