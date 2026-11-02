@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶段六 · React 第2课：props 与组件通信</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.7; padding: 24px; }
+  .wrap { max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #4b5563; margin-bottom: 18px; }
+  .app { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px; }
+  .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; }
+  .card h3 { font-size: 15px; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: #64748b; margin-bottom: 4px; }
+  .badge { display: inline-block; background: #e0e7ff; color: #3730a3; border-radius: 999px; padding: 1px 10px; font-size: 12px; }
+  .tasks { margin-top: 18px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; }
+  .tasks h2 { font-size: 15px; margin: 0 0 8px; }
+  .tasks ol { margin-left: 18px; font-size: 14px; }
+  .tasks li { margin-bottom: 6px; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>React 第2课：props 与组件通信</h1>
+  <p class="sub">第1课学了"传单个 prop"。今天打通三件事：<strong>children</strong>（组件里嵌内容）、<strong>默认值</strong>、<strong>单向数据流</strong>（数据在父、展示在子）。</p>
+
+  <div id="root" class="app"></div>
+
+  <section class="tasks">
+    <h2>改动任务（做完才过关）</h2>
+    <ol>
+      <li><strong>children 实战</strong>：新建一个 <code>Panel</code> 组件，结构 = 标题（<code>props.title</code>）+ 内容区（<code>props.children</code>），放进 App 并往里面塞两个 <code>&lt;p&gt;</code>（注释写：children 和普通 prop 有什么区别——谁决定内容）</li>
+      <li><strong>默认值</strong>：给 Greeting 加默认 <code>name = "游客"</code>，再创建一个不传 name 的 Greeting 验证默认值生效（注释写：默认值在什么场景有用）</li>
+      <li><strong>解构 props</strong>：把 <code>UserCard</code> 的 <code>props.name</code> / <code>props.role</code> 改写成解构写法 <code>function UserCard({ name, role })</code>（注释写：解构比 props.xxx 好在哪）</li>
+      <li><strong>单向数据流</strong>：把待办数组 <code>todos</code> 定义在 App（父组件），传给 <code>TodoList</code> 渲染成列表（注释写：如果子组件想改 todos，能不能直接改 props？该怎么做？）</li>
+    </ol>
+  </section>
+</div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    function Card(props) {
+        return (
+            <div className="card">
+            <h3>{props.title}</h3>
+            <div>{props.children}</div>
+            </div>
+        )
+    }
+
+    function Greeting({ name = "游客"}) {
+        return (
+            <p>你好,{name}!</p>
+        )
+    }
+    //少写 props. 前缀直接拿变量，TS 里配合类型标注
+    function UserCard({ name, role }) {
+        return (
+            <div className="card">
+            <h3>{name}</h3>
+            <p>{role}</p>
+            </div>
+        );
+    }   
+
+    function Panel(props) {
+        return (
+            <div className="card">
+            <h3>{props.title}</h3>
+            <div>{props.children}</div> {/*children 无需指定内容*/}
+            </div>
+        )
+    }
+
+    function TodoList(props) {
+        return (
+            <div className="card">
+                <ul>
+                    { /* 子组件如何改todos？也是用map吗？ */}
+                    {props.items.map(s => (
+                        <li key={s}>{s}</li>
+                    ))}
+                </ul>
+            </div>
+        )
+    }
+
+    function App() {
+        const todos = ["EAT", "MEAN"]
+        return (
+            <div>
+            <Greeting name="郭同学" />
+            <Greeting />  {/* 不传参用默认值 */}
+            <Card title="本周进度">
+                <p>第1课 JSX与组件 ✅</p>
+                <p>第2课 props通信 ← 正在学</p>
+            </Card>
+            <UserCard name="郭同学" role="前端学习者" />
+            <Panel title="panel">
+                <p>第1课 JSX与组件 ✅</p>
+                <p>第2课 props通信 ← 正在学</p>
+                <h4>Hello World</h4>
+            </Panel>
+            <TodoList items={todos}/>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+</script>
+</body>
+</html>
