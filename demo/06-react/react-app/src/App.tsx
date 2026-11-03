@@ -1,6 +1,7 @@
 import Greeting from "./components/Greeting";
 import Card from "./components/Card";
 import TodoList from "./components/TodoList";
+import Counter from "./components/Counter";
 
 interface User {
   name: string;
@@ -26,6 +27,8 @@ function App() {
       <Card title="待办">
         <TodoList items={todos} />
       </Card>
+
+      <Counter />
     </div>
   );
 }
