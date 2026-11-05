@@ -5,6 +5,7 @@ import Counter from "./components/Counter";
 import MyCounter from "./components/MyCounter";
 import TodoApp from "./components/TodoApp";
 import ListDemo from "./components/ListDemo";
+import MyListDemo from "./components/MyListDemo";
 interface User {
   name: string;
   role: string;
@@ -24,7 +25,8 @@ function App() {
         <p>第1课 JSX与组件 ✅</p>
         <p>第2课 props通信 ✅</p>
         <p>第3课 state与事件 ✅</p>
-        <p>第4课 条件渲染与列表渲染 ← 当前课</p>
+        <p>第4课 条件渲染与列表渲染 ✅</p>
+        <p>第5课 表单与受控组件 ← 下一课</p>
       </Card>
 
       <Card title="待办">
@@ -35,6 +37,7 @@ function App() {
       <MyCounter />
       <TodoApp />
       <ListDemo />
+      <MyListDemo />
     </div>
   );
 }
