@@ -37,6 +37,7 @@
 | 2026.11.02 | 阶段六第1课 JSX与组件（my-react-intro） | 组件=返回JSX的函数（大写开头）、JSX三坑（class→className/{}插值/事件驼峰）、props传参≈函数参数、列表渲染map+key、三元条件渲染、React声明式（render/DOM操作被框架封装） | appendChild(字符串)报错（组件里禁止手动DOM操作，只写JSX）；Welcom拼错ReferenceError；done="true"引号传字符串非布尔（truthy陷阱，"False"也触发删除线） | 30min | 4个改动任务全过（Footer组件、city props、skills列表map+key、TodoItem三元条件渲染） |
 | 2026.11.02 | 阶段六第2课 props与组件通信（my-props-communication） | children=标签中间内容（套娃）、解构{name}少写props前缀、默认值{name="游客"}、单向数据流（数据在父、子只读props） | children误用传数据数组（应传普通prop如items）；解构注释误写"报错"（JS解构缺失字段是undefined，报错是TS类型检查的活）；TodoList思考题：子组件不能改props，需父用state+回调（第3课） | 30min | 4个改动任务全过（Panel children、Greeting默认值、UserCard解构、TodoList单向数据流items） |
 | 2026.11.03 | 阶段六第3课 state与事件处理（react-app工程：MyCounter + TodoApp） | useState（[值,改值函数]）、setCount触发重渲染（count++不行）、onClick收函数不收调用、单向数据流闭环（父管state传回调、子调onAdd上报）、不可变更新[...todos,text]、filter按索引删除（map第2参数） | 工程模式双击index.html打不开（必须npm run dev）；const TodoApp()语法错误；大写String应为小写string；JSX里裸写>t<是字面量要包{}；TodoApp首次两个state协作觉得复杂（规律：谁拥有数据谁持state，别人想改走回调） | 50min | 4个改动任务全过（体验useState/重置按钮+注释/TodoApp添加onAdd回调/删除filter不可变更新） |
+| 2026.11.05 | 阶段六第4课 条件渲染与列表渲染（MyListDemo） | &&短路=JSX里不能写if语句所以用表达式（false时整块消失）、三元二选一、map+key（key必须放在map返回的最外层元素）、filter派生数据（返回新数组不动原数组，新引用触发重渲染）、按id删除vs按索引（删除中间行索引错位id不会）、{...todo,done:true}展开更新、Math.max(0,...ids)+1生成自增id | filter注释误写"返回原数组"（概念反了，新数组才触发重渲染）；key放在li但map返回div包li导致警告（key要放最外层）；注释写半截没删；自由发挥把删除/完成合并进一个按钮（done?删除:完成） | 60min | 4个改动任务全过（空状态短路/清除已完成filter/按id删除/key实验+位置修正）+自由发挥添加功能 |
 
 ## 阶段进度
 
