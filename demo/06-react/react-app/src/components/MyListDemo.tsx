@@ -14,11 +14,7 @@ const initialMyTodos: MyTodo[] = [
 
 function MyListDemo() {
     const [todos, setTodos] = useState<MyTodo[]>(initialMyTodos);
-    const [showDone, setShowDone] = useState(false);
     const [newTodoText, setNewTodoText] = useState("");
-
-    const visibleTodos = showDone ? todos : todos.filter((t) => !t.done);
-    const remaining = todos.filter((t) => !t.done).length;
 
     function commit() {
         setTodos((currentTodos) => [
