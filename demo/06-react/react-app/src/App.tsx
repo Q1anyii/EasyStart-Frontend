@@ -7,6 +7,7 @@ import TodoApp from "./components/TodoApp";
 import ListDemo from "./components/ListDemo";
 import MyListDemo from "./components/MyListDemo";
 import FormDemo from "./components/FormDemo";
+import MyFormDemo from "./components/MyFormDemo";
 interface User {
   name: string;
   role: string;
@@ -27,7 +28,8 @@ function App() {
         <p>第2课 props通信 ✅</p>
         <p>第3课 state与事件 ✅</p>
         <p>第4课 条件渲染与列表渲染 ✅</p>
-        <p>第5课 表单与受控组件 ← 当前课</p>
+        <p>第5课 表单与受控组件 ✅</p>
+        <p>第6课 useEffect 与副作用 ← 下一课</p>
       </Card>
 
       <Card title="待办">
@@ -40,6 +42,7 @@ function App() {
       <ListDemo />
       <MyListDemo />
       <FormDemo />
+      <MyFormDemo />
     </div>
   );
 }
