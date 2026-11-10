@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>前端后续路线图（阶段六之后）</title>
+<style>
+  body { margin: 0; padding: 0; background: #f6f8fb; }
+</style>
+</head>
+<body>
+<div style="width:100%;box-sizing:border-box;padding:22px;font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;background:#f6f8fb;">
+  <div style="max-width:920px;margin:0 auto;">
+    <div style="font-size:22px;font-weight:700;color:#18202e;">阶段六之后的路线</div>
+    <div style="font-size:14px;color:#6b7686;margin-top:6px;line-height:1.6;">先收尾框架层，再补工程必备，再按项目需要补 AI 前端专项，最后落到真实项目。<br>标签含义：<b style="color:#2f6fed;">必学</b> · <b style="color:#7c8798;">按需</b> · <b style="color:#2f9e6e;">项目</b></div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:stretch;">
+      <div style="flex:0 0 168px;min-width:168px;background:#eaf1ff;border-left:4px solid #2f6fed;border-radius:10px;padding:12px 14px;box-sizing:border-box;">
+        <div style="font-size:15px;font-weight:700;color:#1d3f8f;">第一层 · 框架收尾</div>
+        <div style="font-size:13px;color:#4c5f85;margin-top:4px;line-height:1.6;">本周内<br>补完最后 2 课</div>
+      </div>
+      <div style="flex:1 1 520px;min-width:260px;display:flex;flex-wrap:wrap;gap:10px;">
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #dfe6f2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">第8课 · 组件化实战</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">记账本 React 重构：拆组件、state 归位、props 串通信、effect 同步持久化</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #dfe6f2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">第9课 · 路由 + 完整项目</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">React Router、多页组织、对话前端雏形（chat-stream 的 React+TS 正式版）</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:stretch;">
+      <div style="flex:0 0 168px;min-width:168px;background:#e8f5ef;border-left:4px solid #2f9e6e;border-radius:10px;padding:12px 14px;box-sizing:border-box;">
+        <div style="font-size:15px;font-weight:700;color:#1c6b4a;">第二层 · 工程必备</div>
+        <div style="font-size:13px;color:#3f6b58;margin-top:4px;line-height:1.6;">日常开发要用<br>优先级最高</div>
+      </div>
+      <div style="flex:1 1 520px;min-width:260px;display:flex;flex-wrap:wrap;gap:10px;">
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #dfe6f2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">请求层 + 流式</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">fetch 封装、加载/错误态、SSE 流式响应——优先级最高，直接服务项目层</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #dfe6f2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">状态管理</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">Context 先够用，再上 Zustand 轻量方案；Redux 非必要不学</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #dfe6f2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">样式与组件库</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">Tailwind 或 Ant Design 二选一，别两套都学</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #dfe6f2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">构建与部署</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">Vite 产物、Nginx、Docker 前端镜像；读懂现有 CI/CD workflow</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px dashed #cfd8e6;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#3f4958;">测试（按需）</div>
+          <div style="font-size:13px;color:#7c8798;margin-top:3px;line-height:1.55;">Vitest + Testing Library 基础；有时间再补</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:stretch;">
+      <div style="flex:0 0 168px;min-width:168px;background:#f2f4f8;border-left:4px solid #7c8798;border-radius:10px;padding:12px 14px;box-sizing:border-box;">
+        <div style="font-size:15px;font-weight:700;color:#3f4958;">第三层 · AI 前端专项</div>
+        <div style="font-size:13px;color:#6b7686;margin-top:4px;line-height:1.6;">跟项目走<br>用到再学</div>
+      </div>
+      <div style="flex:1 1 520px;min-width:260px;display:flex;flex-wrap:wrap;gap:10px;">
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #e3e8f0;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#3f4958;">流式对话渲染</div>
+          <div style="font-size:13px;color:#7c8798;margin-top:3px;line-height:1.55;">逐字追加、中断、正在输入态</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #e3e8f0;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#3f4958;">Markdown + 代码高亮</div>
+          <div style="font-size:13px;color:#7c8798;margin-top:3px;line-height:1.55;">回复内容格式化渲染</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #e3e8f0;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#3f4958;">会话与上下文管理</div>
+          <div style="font-size:13px;color:#7c8798;margin-top:3px;line-height:1.55;">历史列表、Token 用量、多轮状态</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #e3e8f0;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#3f4958;">长列表虚拟滚动</div>
+          <div style="font-size:13px;color:#7c8798;margin-top:3px;line-height:1.55;">几百轮对话不卡的方案</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px dashed #cfd8e6;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#3f4958;">Next.js / Vercel AI SDK</div>
+          <div style="font-size:13px;color:#7c8798;margin-top:3px;line-height:1.55;">做公网产品或确实需要时再学，现阶段不急着上</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:stretch;">
+      <div style="flex:0 0 168px;min-width:168px;background:#fdf3e7;border-left:4px solid #d9822b;border-radius:10px;padding:12px 14px;box-sizing:border-box;">
+        <div style="font-size:15px;font-weight:700;color:#8a5316;">第四层 · 项目落地</div>
+        <div style="font-size:13px;color:#8a5316;margin-top:4px;line-height:1.6;">真实需求驱动<br>不再跟教程</div>
+      </div>
+      <div style="flex:1 1 520px;min-width:260px;display:flex;flex-wrap:wrap;gap:10px;">
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #f0e2d2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">重写一个已有前端应用</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">用 React + TS + 真接口 + 流式，替换现有实现</div>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;background:#fff;border:1px solid #f0e2d2;border-radius:10px;padding:11px 13px;box-sizing:border-box;">
+          <div style="font-size:14px;font-weight:600;color:#18202e;">Agent 前端可视化壳</div>
+          <div style="font-size:13px;color:#6b7686;margin-top:3px;line-height:1.55;">给已有 Agent 加一层可视化界面，可延后</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:#18202e;color:#e8edf5;border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.7;">
+      <b style="color:#7fb2ff;">收工判据：</b>能独立做完一个「带路由 + 带真接口 + 带流式 + 能部署」的前端应用，前端这条路线就可以收工，回到后端/Agent 主线。
+    </div>
+
+    <div style="margin-top:16px;font-size:13px;color:#6b7686;line-height:1.7;">
+      <b style="color:#3f4958;">取舍原则：</b>第二层「请求层 + 流式」最先补，它同时服务第9课、项目层与流式对话场景；样式方案只选一套；Redux / Monorepo / 微前端 / SSR 深度定制现阶段不学；测试只到"能写 3~5 个用例、讲清为什么测纯函数比测组件容易"。
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -28,6 +28,7 @@
 ```
 前端练习/
 ├── README.md               # 本文件
+├── 前端路线图.html          # 阶段六之后的路线（四层推进，浏览器打开）
 ├── 前端学习路线.md          # 旧版路线（TS→Vue3→chat-stream-lite），已被 React 路线取代，仅存档
 ├── demo/                   # 练习主目录
 │   ├── README.md           # demo 目录说明
