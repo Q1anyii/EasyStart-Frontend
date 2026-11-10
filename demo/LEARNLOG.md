@@ -39,6 +39,7 @@
 | 2026.11.03 | 阶段六第3课 state与事件处理（react-app工程：MyCounter + TodoApp） | useState（[值,改值函数]）、setCount触发重渲染（count++不行）、onClick收函数不收调用、单向数据流闭环（父管state传回调、子调onAdd上报）、不可变更新[...todos,text]、filter按索引删除（map第2参数） | 工程模式双击index.html打不开（必须npm run dev）；const TodoApp()语法错误；大写String应为小写string；JSX里裸写>t<是字面量要包{}；TodoApp首次两个state协作觉得复杂（规律：谁拥有数据谁持state，别人想改走回调） | 50min | 4个改动任务全过（体验useState/重置按钮+注释/TodoApp添加onAdd回调/删除filter不可变更新） |
 | 2026.11.05 | 阶段六第4课 条件渲染与列表渲染（MyListDemo） | &&短路=JSX里不能写if语句所以用表达式（false时整块消失）、三元二选一、map+key（key必须放在map返回的最外层元素）、filter派生数据（返回新数组不动原数组，新引用触发重渲染）、按id删除vs按索引（删除中间行索引错位id不会）、{...todo,done:true}展开更新、Math.max(0,...ids)+1生成自增id | filter注释误写"返回原数组"（概念反了，新数组才触发重渲染）；key放在li但map返回div包li导致警告（key要放最外层）；注释写半截没删；自由发挥把删除/完成合并进一个按钮（done?删除:完成） | 60min | 4个改动任务全过（空状态短路/清除已完成filter/按id删除/key实验+位置修正）+自由发挥添加功能 |
 | 2026.11.06 | 阶段六第5课 表单与受控组件（MyFormDemo） | 受控组件=state管值（value负责显示onChange写回，单一数据源）、React表单三注意（textarea用value不写内容/select的value在select上不在option/checkbox用checked不用value）、onSubmit必须preventDefault防刷新、多字段一个对象state+{...form,[e.target.name]:value}统一onChange（计算属性名一处顶三处）、字数派生不单独存state、disabled由state派生（!agreed||length>50） | 三元素忘写name→e.target.name为undefined导致受控输入框打不进字（死锁）；checkbox用handleChange读value勾不上（应读checked）；submitted存了快照但没渲染→build报TS6133；空onClick调试残留 | 60min | 4个改动任务全过（条款门槛disabled/字数限制派生/深圳选项/统一onChange+e.target.name） |
+| 2026.11.10 | 阶段六第6课 useEffect与副作用（MyEffectDemo） | 副作用=渲染之外影响外部世界的事（请求/定时器/localStorage/订阅）；useEffect三种依赖形态（[]=挂载只跑一次、[dep]=dep变化就重跑、不写=每次渲染都跑）；return清理函数（下次执行前/卸载时调用，清interval防泄漏）；依赖数组=effect的触发条件清单，[]里没有值可比所以永不因变化重跑；StrictMode开发模式故意跑两次检验清理函数 | 想通[]为何永不重跑（空清单没有可变的值，而[running]能被外部改）；不写clearInterval旧定时器会一直跑；第二条日志文案复制错（写成挂载effect实为变化effect）；自由发挥加floorFixed做0.1秒精度 | 40min | 4个改动任务全过（暂停验证+注释/依赖实验[]与[running]对比/刷新持久化读写分工/控制台对照两组日志次数） |
 
 ## 阶段进度
 
@@ -53,7 +54,7 @@
   - [x] DOM 操作（选中元素、改内容/样式、创建元素）
   - [x] 事件（click/input/keydown、事件对象）
   - [x] 异步入门（setTimeout、Promise、async/await、fetch）
-- [ ] **阶段二 · 语法整合 demo**：
+- [x] **阶段二 · 语法整合 demo**：
   - [x] 待办清单（数据驱动循环：数组→render→事件→改数据）
   - [x] 随机点名器（Math.random、守卫子句）
   - [x] 图片轮播（setInterval、取模转圈、圆点指示器）
@@ -63,4 +64,4 @@
   - [x] 天气查询页（fetch 真实 API）
 - [x] **阶段四 · 复现项目**：chat-stream-lite
 - [x] **阶段五 · TS 速成**：类型标注/interface/联合类型/可选字段
-- [ ] **阶段六 · 框架**：React（下周开始）
+- [ ] **阶段六 · 框架**：React（进行中：第1~6课 ✅ / 第7课工程化已提前落地 ✅ / 第8课组件化实战 ← 下一课）

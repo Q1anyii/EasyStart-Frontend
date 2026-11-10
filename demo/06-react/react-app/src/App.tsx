@@ -9,6 +9,7 @@ import MyListDemo from "./components/MyListDemo";
 import FormDemo from "./components/FormDemo";
 import MyFormDemo from "./components/MyFormDemo";
 import EffectDemo from "./components/EffectDemo";
+import MyEffectDemo from "./components/MyEffectDemo";
 interface User {
   name: string;
   role: string;
@@ -30,7 +31,9 @@ function App() {
         <p>第3课 state与事件 ✅</p>
         <p>第4课 条件渲染与列表渲染 ✅</p>
         <p>第5课 表单与受控组件 ✅</p>
-        <p>第6课 useEffect 与副作用 ← 当前课</p>
+        <p>第6课 useEffect 与副作用 ✅</p>
+        <p>第7课 工程化 Vite+TS（已提前落地）✅</p>
+        <p>第8课 组件化实战：重构记账本 ← 下一课</p>
       </Card>
 
       <Card title="待办">
@@ -45,6 +48,7 @@ function App() {
       <FormDemo />
       <MyFormDemo />
       <EffectDemo />
+      <MyEffectDemo />
     </div>
   );
 }
