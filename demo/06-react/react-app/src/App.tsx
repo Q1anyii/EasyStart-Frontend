@@ -11,6 +11,7 @@ import MyFormDemo from "./components/MyFormDemo";
 import EffectDemo from "./components/EffectDemo";
 import MyEffectDemo from "./components/MyEffectDemo";
 import LedgerDemo from "./components/LedgerDemo";
+import MyLedgerDemo from "./components/MyLedgerDemo";
 interface User {
   name: string;
   role: string;
@@ -34,7 +35,8 @@ function App() {
         <p>第5课 表单与受控组件 ✅</p>
         <p>第6课 useEffect 与副作用 ✅</p>
         <p>第7课 工程化 Vite+TS（已提前落地）✅</p>
-        <p>第8课 组件化实战：重构记账本 ← 当前课</p>
+        <p>第8课 组件化实战：重构记账本 ✅</p>
+        <p>第9课 路由 + 完整项目 ← 下一课</p>
       </Card>
 
       <Card title="待办">
@@ -51,6 +53,7 @@ function App() {
       <EffectDemo />
       <MyEffectDemo />
       <LedgerDemo />
+      <MyLedgerDemo />
     </div>
   );
 }
