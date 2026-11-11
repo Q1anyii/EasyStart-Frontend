@@ -80,15 +80,16 @@ function FilterBar({ value, onChange }: FilterBarProps) {
   );
 }
 
-interface RecordListProps{
-    records: LedgerRecord[];
-    onDelete: (id: number) => void;
-};
+interface RecordListProps {
+  records: LedgerRecord[];
+  onDelete: (id: number) => void;
+  emptyText: string;
+}
 
 
-function RecordList({ records, onDelete}: RecordListProps) {
-    if (!records || records.length === 0){
-        return <p style={{ color: "#94a3b8" }}>该类别下暂无记录</p>;
+function RecordList({ records, onDelete, emptyText}: RecordListProps) {
+    if (records.length === 0) {
+        return <p style={{ color: "#94a3b8" }}>{emptyText}</p>;
     }
     return(
          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -156,8 +157,11 @@ function MyLedgerDemo() {
                 筛选：<FilterBar value={filter} onChange={setFilter} />
                 <button onClick={() => handleDeleteAll()}>清空</button>
             </p>
-            {records.length === 0 && <p>还没有记录，记一笔吧</p>}
-            {records.length !== 0 && <RecordList records={visible} onDelete={handleDelete} />}
+            <RecordList
+                records={visible}
+                onDelete={handleDelete}
+                emptyText={records.length === 0 ? "还没有记录，记一笔吧" : "该类别下暂无记录"}
+            />
             <p style={{ textAlign: "right", marginTop: 8, fontWeight: 600 }}>
                 合计：¥{total.toFixed(2)}
             </p>
